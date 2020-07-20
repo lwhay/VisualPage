@@ -28,4 +28,6 @@ public interface ApiWuZhengBService {
 
     int update(Map<String,Object> map);
 
+    int insertKineticSet(Map<String, Object> map);
+
 }

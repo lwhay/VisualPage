@@ -23,6 +23,17 @@ public class ApiWuZhengBController {
         apiWuZhengBService.down(FILEID,tableName,tableIdName,tableFileName,tableFileContent,response);
     }
 
+    /**
+     * Insert into kinetic_set
+     */
+    @RequestMapping(value = "/insert/kinetic_set") public ResultVo insert(@RequestBody Map<String, Object> map) {
+        try {
+            return ResultVoUtil.success(apiWuZhengBService.insertKineticSet(map));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.serviceErr();
+        }
+    }
 
     /**
      * 修改

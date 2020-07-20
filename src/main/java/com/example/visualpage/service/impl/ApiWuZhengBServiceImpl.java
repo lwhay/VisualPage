@@ -363,6 +363,32 @@ public class ApiWuZhengBServiceImpl implements ApiWuZhengBService {
         return 0;
     }
 
+    @Override @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class,
+            RuntimeException.class }) public int insertKineticSet(Map<String, Object> map) {
+        Object[] objects = new Object[map.size()];
+        String sql = "insert into " + map.get("tableName") == null ? "" : map.get("tableName").toString() + "(";
+        String keypart = "";
+        String valpart = "";
+        for (Map.Entry<String, Object> e : map.entrySet()) {
+            keypart += e.getKey();
+            keypart += ",";
+            valpart += e.getValue().toString();
+            valpart += ",";
+        }
+        keypart = keypart.trim();
+        keypart = keypart.substring(0, keypart.length() - 1);
+        valpart = valpart.trim();
+        valpart = valpart.substring(0, valpart.length() - 1);
+        sql += keypart;
+        sql += ")";
+        sql += " values(";
+        sql += valpart;
+        sql += ");";
+        System.out.print(sql);
+        secondJdbcTemplate.execute(sql);
+        return 0;
+    }
+
 
     public String timeStamp2Date(Object o) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
