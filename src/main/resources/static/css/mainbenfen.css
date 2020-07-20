@@ -1,0 +1,35 @@
+#vue_index #main_content .container {
+  padding-bottom: 6px;
+}
+#vue_index #main_content .container .input-group {
+  padding: 10px 3px 3px 3px;
+}
+#vue_index #main_content .container .input-group .input-label {
+  text-align: right;
+  margin: 0;
+  height: 38px;
+  line-height: 19px;
+}
+#vue_index #main_content .container .input-group .input-label span {
+  text-align: right;
+}
+#vue_index #main_content .container .photo-all .fullPhoto .img-fluid {
+  width: 750px;
+  height: 350px;
+}
+h2,
+h3,
+h4 {
+  text-align: left;
+  font-size: 14px;
+  color: #fff;
+  background-image: linear-gradient(160deg, #2289e0 0%, #3988d0 67%, #3548e1 100%);
+  height: 35px;
+  line-height: 35px;
+  padding-left: 15px;
+  margin-top: 10px;
+  border-radius: 3px 3px 0 0;
+}
+.row {
+  margin: 0;
+}

@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>涉案物品详情</title>
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/vue.min.js"></script>
+  <script src="js/axios.min.js"></script>
+  <script src="bootstrap4.5.0/js/bootstrap.min.js"></script>
+  <script src="bootstrap4.5.0/js/popper.min.js"></script>
+    <script src="time/index.js"></script>
+  <link rel="stylesheet" href="bootstrap4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="time/index.css">
+  <link rel="stylesheet" href="css/main.css">
+
+
+</head>
+
+<body>
+  <div id="vue_index">
+    <!-- M模态框 -->
+    <button type="button" class="btn btn-primary modal-button" data-toggle="modal" data-target="#exampleModal"
+      style="display: none">
+      触发模态框按钮
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">提 示</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {{alertMessage}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="main_content">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="col-h2">
+              <h2>{{dataList.INVOLVED_GOODS_NAME}}</h2>
+            </div>
+            <div class="row">
+         <!--     <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">涉案物品信息ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_GOODS_INFO_ID"
+                  aria-describedby="basic-addon3">
+              </div>-->
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">物品名称</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_GOODS_NAME"
+                  aria-describedby="basic-addon3" v-model="dataList.INVOLVED_GOODS_NAME">
+              </div>
+            <!--  <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">物品种类ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_GOODS_TYPE_ID"
+                  aria-describedby="basic-addon3">
+              </div>-->
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">提取位置</span>
+                </div>
+                <input type="text" disabled class="form-control" id="EXTRACT_POSITION" aria-describedby="basic-addon3"
+                  v-model="dataList.EXTRACT_POSITION">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">尺寸大小</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_GOODS_SIZE"
+                  aria-describedby="basic-addon3" v-model="dataList.INVOLVED_GOODS_SIZE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">物品状态</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_GOODS_STATE"
+                  aria-describedby="basic-addon3" v-model="dataList.INVOLVED_GOODS_STATE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">外观特点</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_GOODS_APPEARANCE"
+                  aria-describedby="basic-addon3" v-model="dataList.INVOLVED_GOODS_APPEARANCE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">物质成分</span>
+                </div>
+                <input type="text" disabled class="form-control" id="MATERIAL_COMPONENT" aria-describedby="basic-addon3"
+                  v-model="dataList.MATERIAL_COMPONENT">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">功能特点</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_GOODS_FUNCTION"
+                  aria-describedby="basic-addon3" v-model="dataList.INVOLVED_GOODS_FUNCTION">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">采购渠道</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_GOODS_CHANNEL"
+                  aria-describedby="basic-addon3" v-model="dataList.INVOLVED_GOODS_CHANNEL">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">供应商</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_GOODS_SUPPLIER"
+                  aria-describedby="basic-addon3" v-model="dataList.INVOLVED_GOODS_SUPPLIER">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">制造商</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_GOODS_MANUFACTURER"
+                  aria-describedby="basic-addon3" v-model="dataList.INVOLVED_GOODS_MANUFACTURER">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">采购时间</span>
+                </div>
+              <!--  <input type="text" disabled class="form-control" id="PURCHASE_TIME" aria-describedby="basic-addon3"
+                  v-model="dataList.PURCHASE_TIME">-->
+                  <el-date-picker v-model="dataList.PURCHASE_TIME" id="PURCHASE_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                  placeholder="选择日期时间">
+                  </el-date-picker>
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">到货时间</span>
+                </div>
+               <!-- <input type="text" disabled class="form-control" id="ARRIVAL_TIME" aria-describedby="basic-addon3"
+                  v-model="dataList.ARRIVAL_TIME">-->
+                  <el-date-picker v-model="dataList.ARRIVAL_TIME" id="ARRIVAL_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                  placeholder="选择日期时间">
+                  </el-date-picker>
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">其他来源</span>
+                </div>
+                <input type="text" disabled class="form-control" id="OTHER_SOURCE" aria-describedby="basic-addon3"
+                  v-model="dataList.OTHER_SOURCE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">包装方式</span>
+                </div>
+                <input type="text" disabled class="form-control" id="PACKING_MODE" aria-describedby="basic-addon3"
+                  v-model="dataList.PACKING_MODE">
+              </div>
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">勘验基础信息ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="BASE_INFO_ID" aria-describedby="basic-addon3">
+              </div>-->
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">物品人员ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="TYPE_ID" aria-describedby="basic-addon3">
+              </div>-->
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">调查时间</span>
+                </div>
+          <!--      <input type="text" disabled class="form-control" id="INVESTIGATION_TIME" aria-describedby="basic-addon3"
+                  v-model="dataList.INVESTIGATION_TIME">-->
+                  <el-date-picker v-model="dataList.INVESTIGATION_TIME" id="INVESTIGATION_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                  placeholder="选择日期时间">
+                  </el-date-picker>
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">调查人</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVESTIGATION_PERSION"
+                  aria-describedby="basic-addon3" v-model="dataList.INVESTIGATION_PERSION">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">调查地点</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVESTIGATION_ADDRESS"
+                  aria-describedby="basic-addon3" v-model="dataList.INVESTIGATION_ADDRESS">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">备注</span>
+                </div>
+                <input type="text" disabled class="form-control" id="REMARKS" aria-describedby="basic-addon3"
+                  v-model="dataList.REMARKS">
+              </div>
+            <!--  <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">创建人ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="CREATE_PERSION_ID" aria-describedby="basic-addon3">
+              </div>-->
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">创建时间</span>
+                </div>
+             <!--   <input type="text" disabled class="form-control" id="CREATE_TIME" aria-describedby="basic-addon3"
+                  v-model="dataList.CREATE_TIME">-->
+                  <el-date-picker v-model="dataList.CREATE_TIME" id="CREATE_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                  placeholder="选择日期时间">
+                  </el-date-picker>
+              </div>
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">修改时间</span>
+                </div>
+                <input type="text" disabled class="form-control" id="UPDATE_TIME" aria-describedby="basic-addon3"
+                  v-model="dataList.UPDATE_TIME">
+              </div>-->
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">数据来源</span>
+                </div>
+                <input type="text" disabled class="form-control" id="DATA_STATE" aria-describedby="basic-addon3"
+                  v-model="dataList.DATA_STATE">
+              </div>-->
+              <!--<div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">数据状态</span>
+                </div>
+                <input type="text" disabled class="form-control" id="DATA_SOURCES" aria-describedby="basic-addon3"
+                  v-model="dataList.DATA_SOURCES">
+              </div>-->
+              <!--<div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">关联涉案人员</span>
+                </div>
+                <input type="text" disabled class="form-control" id="RELATION_PERSON" aria-describedby="basic-addon3"
+                  v-model="dataList.RELATION_PERSON">
+              </div>-->
+            <!--  <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">关联涉案物品</span>
+                </div>
+                <input type="text" disabled class="form-control" id="RELATION_GOODS" aria-describedby="basic-addon3"
+                  v-model="dataList.RELATION_GOODS">
+              </div>-->
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">关联尸体信息</span>
+                </div>
+                <input type="text" disabled class="form-control" id="RELATION_CORPSE" aria-describedby="basic-addon3"
+                  v-model="dataList.RELATION_CORPSE">
+              </div>-->
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">是否痕迹物品转换涉案</span>
+                </div>
+                <input type="text" disabled class="form-control" id="IS_MARK_GOODS" aria-describedby="basic-addon3"
+                  v-model="dataList.IS_MARK_GOODS">
+              </div>-->
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">痕迹物品ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="MARK_GOODS_ID" aria-describedby="basic-addon3">
+              </div>
+-->
+              <div class="input-btn col-md-12" style="display: flex;justify-content: center;padding: 10px;">
+                <button type="button" @click="involvedEditClick" class="btnmy"
+                  style="margin-right: 30px;">编辑</button>
+                <button type="button" @click="involvedSaveClick" class="btnmy">保存</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="row" style="padding: 15px 28px;">
+          <span style="margin-right: 20px;">附件：</span>
+          <a target="_blank" v-for="ige in involvedGoodsEnclosure" :href="downUrl+'&FILEID='+ige.FILEID"
+            style="margin-right: 25px;">{{ige.FILENAME}}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config/config.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#vue_index',
+      data: {
+        alertMessage: "1",
+        involvedGoodsInfoId: "",
+        dataList: {},
+        involvedGoodsEnclosure: [],
+        downUrl: base_ip + "/wuzhengB/down?tableName=INVOLVED_GOODS_ENCLOSURE&tableIdName=INVOLVED_GOODS_ENCLOSURE_ID&tableFileName=INVOLVED_GOODS_ENCLOSURE_NAME&tableFileContent=INVOLVED_GOODS_ENCLOSURE_CONTENT"
+      },
+      mounted() {
+        this.init();
+      },
+      methods: {
+        init() {
+          // 获取指定参数值
+          this.involvedGoodsInfoId = this.getUrlParam('involvedGoodsInfoId');
+          if (this.involvedGoodsInfoId == "") {
+            this.alertMessage = "参数错误";
+            $(".modal-button").click();
+          } else {
+            let params = {
+              involvedGoodsInfoId: this.involvedGoodsInfoId
+            }
+            axios.post(base_ip + "/wuzhengB/select/involvedGoodsInfo", params).then((response) => {
+              if (response.data.code == '200') {
+                // alert('请求成功')
+                this.dataList = response.data.data.involvedGoodsInfo == null ? {} : response.data.data.involvedGoodsInfo;
+                this.involvedGoodsEnclosure = response.data.data.involvedGoodsEnclosure
+                // console.log(this.dataList);
+
+              } else {
+                this.alertMessage = "baseInfoId:" + baseInfoId;
+                $(".modal-button").click();
+
+              }
+            })
+          }
+        },
+        getUrlParam(name) {
+          // 取得url中?后面的字符
+          var query = window.location.search.substring(1);
+          // 把参数按&拆分成数组
+          var param_arr = query.split("&");
+          for (var i = 0; i < param_arr.length; i++) {
+            var pair = param_arr[i].split("=");
+            if (pair[0] == name) {
+              return pair[1];
+            }
+          }
+          return "";
+        },
+
+        involvedEditClick() {
+          $('.input-group input').attr('disabled', false)
+        },
+        involvedSaveClick() {
+          this.dataList.tableName = "INVOLVED_GOODS_INFO";
+          this.dataList.tableId = "INVOLVED_GOODS_INFO_ID";
+          axios.post(base_ip + "/wuzhengB/update", this.dataList).then((response) => {
+            if (response.data.code == '200') {
+            } else {
+              this.alertMessage = response.data.code.message;
+              $(".modal-button").click();
+            }
+          })
+          $('.input-group input').attr('disabled', true)
+        }
+      }
+    })
+
+  </script>
+</body>
+
+</html>

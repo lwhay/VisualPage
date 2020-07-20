@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>媒介环境信息</title>
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/vue.min.js"></script>
+  <script src="js/axios.min.js"></script>
+  <script src="bootstrap4.5.0/js/bootstrap.min.js"></script>
+  <script src="bootstrap4.5.0/js/popper.min.js"></script>
+  <script src="time/index.js"></script>
+  <link rel="stylesheet" href="bootstrap4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="time/index.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+  <div id="vue_index">
+    <!-- M模态框 -->
+    <button type="button" class="btn btn-primary modal-button" data-toggle="modal" data-target="#exampleModal"
+      style="display: none">
+      触发模态框按钮
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">提 示</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {{alertMessage}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="main_content">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="col-h2">
+              <h2>{{mediaList.MEDIA_NAME}}-媒介环境信息</h2>
+            </div>
+            <div class="row">
+           <!--   <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">媒介环境信息ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="MEDIA_ENVIRONMENT_INFO_ID"
+                  aria-describedby="basic-addon3">
+              </div>-->
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">勘验基础信息ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="BASE_INFO_ID" aria-describedby="basic-addon3">
+              </div>-->
+           <!--   <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">类型ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="TYPE_ID" aria-describedby="basic-addon3">
+              </div>-->
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">名称</span>
+                </div>
+                <input type="text" disabled class="form-control" id="MEDIA_NAME" aria-describedby="basic-addon3"
+                  v-model="mediaList.MEDIA_NAME">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">描述</span>
+                </div>
+                <input type="text" disabled class="form-control" id="MEDIA_CONTENT" aria-describedby="basic-addon3"
+                  v-model="mediaList.MEDIA_CONTENT">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">创建时间</span>
+                </div>
+               <!-- <input type="text" disabled class="form-control" id="CREATE_TIME" aria-describedby="basic-addon3"
+                  v-model="mediaList.CREATE_TIME">-->
+                <el-date-picker v-model="mediaList.CREATE_TIME" id="CREATE_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="选择日期时间">
+                </el-date-picker>
+              </div>
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">修改时间</span>
+                </div>
+                <input type="text" disabled class="form-control" id="UPDATE_TIME" aria-describedby="basic-addon3"
+                  v-model="mediaList.UPDATE_TIME">
+              </div>-->
+            <!--  <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">数据来源</span>
+                </div>
+                <input type="text" disabled class="form-control" id="DATA_SOURCES" aria-describedby="basic-addon3"
+                  v-model="mediaList.DATA_SOURCES">
+              </div>-->
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">数据状态</span>
+                </div>
+                <input type="text" disabled class="form-control" id="DATA_STATE" aria-describedby="basic-addon3"
+                  v-model="mediaList.DATA_STATE">
+              </div>-->
+          <!--    <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">创建人ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="CREATE_PERSION_ID" aria-describedby="basic-addon3">
+              </div>-->
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">媒体类型</span>
+                </div>
+                <input type="text" disabled class="form-control" id="MEDIA_TYPE" aria-describedby="basic-addon3"
+                  v-model="mediaList.MEDIA_TYPE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">类型名称</span>
+                </div>
+                <input type="text" disabled class="form-control" id="TYPE_NAME" aria-describedby="basic-addon3"
+                  v-model="mediaList.TYPE_NAME">
+              </div>
+
+              <div class="input-btn col-md-12" style="display: flex;justify-content: center;padding: 10px;">
+                <button type="button" @click="mediaEditClick" class="btnmy"
+                  style="margin-right: 30px">编辑</button>
+                <button type="button" @click="mediaSaveClick" class="btnmy">保存</button>
+              </div>
+
+            </div>
+            <div class="row" style="padding: 15px 25px;">
+              <span style="margin-right: 20px;">附件：</span>
+              <a target="_blank" v-for="ige in mediaAtta" :href="downUrl+'&FILEID='+ige.FILEID"
+                style="margin-right: 25px;">{{ige.FILENAME}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config/config.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#vue_index',
+      data: {
+        alertMessage: "1",
+        mediaEnvironmentInfoId: "",
+        mediaList: {},
+        mediaAtta: [],
+        downUrl: base_ip + "/wuzhengB/down?tableName=MEDIA_ATTA&tableIdName=ATTA_ID&tableFileName=ATTA_NAME&tableFileContent=ATTA_CONTENT"
+      },
+      mounted() {
+        this.init();
+      },
+      methods: {
+        init() {
+          // 获取指定参数值
+          this.mediaEnvironmentInfoId = this.getUrlParam('mediaEnvironmentInfoId');
+          if (this.mediaEnvironmentInfoId == "") {
+            this.alertMessage = "参数错误";
+            $(".modal-button").click();
+          } else {
+            let params = {
+              mediaEnvironmentInfoId: this.mediaEnvironmentInfoId
+            }
+            axios.post(base_ip + "/wuzhengB/select/mediaEnvironmentInfo", params).then((response) => {
+              console.log(response.data)
+              if (response.data.code == '200') {
+                // alert('请求成功')
+                this.mediaList = response.data.data.mediaEnvironmentInfo == null ? {} : response.data.data.mediaEnvironmentInfo;
+                this.mediaAtta = response.data.data.mediaAtta;
+                // console.log(this.dataList);
+
+              } else {
+                this.alertMessage = "baseInfoId:" + baseInfoId;
+                $(".modal-button").click();
+
+              }
+            })
+          }
+        },
+        getUrlParam(name) {
+          // 取得url中?后面的字符
+          var query = window.location.search.substring(1);
+          // 把参数按&拆分成数组
+          var param_arr = query.split("&");
+          for (var i = 0; i < param_arr.length; i++) {
+            var pair = param_arr[i].split("=");
+            if (pair[0] == name) {
+              return pair[1];
+            }
+          }
+          return "";
+        },
+
+        mediaEditClick() {
+          $('.input-group input').attr('disabled', false)
+        },
+        mediaSaveClick() {
+          this.mediaList.tableName = "MEDIA_ENVIRONMENT_INFO";
+          this.mediaList.tableId = "MEDIA_ENVIRONMENT_INFO_ID";
+          delete this.mediaList["TYPE_NAME"];
+          delete this.mediaList["MEDIA_TYPE"];
+          axios.post(base_ip + "/wuzhengB/update", this.mediaList).then((response) => {
+            if (response.data.code == '200') {
+
+            } else {
+              this.alertMessage = response.data.code.message;
+              $(".modal-button").click();
+            }
+          })
+          $('.input-group input').attr('disabled', true)
+        }
+      }
+    })
+
+  </script>
+</body>
+
+</html>

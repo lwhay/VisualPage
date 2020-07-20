@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>侦查实验</title>
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/vue.min.js"></script>
+  <script src="js/axios.min.js"></script>
+  <script src="bootstrap4.5.0/js/bootstrap.min.js"></script>
+  <script src="bootstrap4.5.0/js/popper.min.js"></script>
+  <link rel="stylesheet" href="bootstrap4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+
+<body>
+  <div id="vue_index">
+    <!-- M模态框 -->
+    <button type="button" class="btn btn-primary modal-button" data-toggle="modal" data-target="#exampleModal"
+      style="display: none">
+      触发模态框按钮
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">提 示</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {{alertMessage}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="main_content">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="col-h2">
+              <h2>-侦查实验</h2>
+            </div>
+            <div class="row">
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">结论</span>
+                </div>
+                <input type="text" disabled class="form-control" id="SCOUT_CON" aria-describedby="basic-addon3"
+                  v-model="scoutList.SCOUT_CON">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">创建时间</span>
+                </div>
+                <el-date-picker v-model="scoutList.CREATE_TIME" id="CREATE_TIME" type="datetime" placeholder="选择日期时间">
+                </el-date-picker>
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">数据状态</span>
+                </div>
+                <input type="text" disabled class="form-control" id="CORPSE_INFORMATION" aria-describedby="basic-addon3"
+                  v-model="scoutList.CORPSE_INFORMATION">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">数据来源</span>
+                </div>
+                <input type="text" disabled class="form-control" id="DATA_SOURCES" aria-describedby="basic-addon3"
+                  v-model="scoutList.DATA_SOURCES">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">修改时间</span>
+                </div>
+                <el-date-picker v-model="scoutList.UPDATE_TIME" id="UPDATE_TIME" type="datetime" placeholder="选择日期时间">
+                </el-date-picker>
+              </div>
+
+              <div class="input-btn col-md-12" style="display: flex;justify-content: center;padding: 10px;">
+                <button type="button" @click="mediaEditClick" class="btn btn-warning"
+                  style="margin-right: 30px;color: #fff;background-color: #ec8b0b;width: 152px;height: 51px;">编辑</button>
+                <button type="button" @click="mediaSaveClick" class="btn btn-primary"
+                  style="background-color: #2196f3;width: 152px;height: 51px;">保存</button>
+              </div>
+
+            </div>
+            <div class="row" style="padding: 15px 25px;">
+              <span style="margin-right: 20px;">附件：</span>
+              <a style="margin-right: 25px;" target="_blank"
+                :href="downUrl+'&FILEID='+scoutAtta.ATTA_ID">{{scoutAtta.ATTA_NAME}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config/config.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#vue_index',
+      data: {
+        alertMessage: "1",
+        scoutId: "",
+        scoutList: {},
+        scoutAtta: {},
+        downUrl: base_ip + "/wuzhengB/down?tableName=SCOUT_ATTA&tableIdName=ATTA_ID&tableFileName=ATTA_NAME&tableFileContent=ATTA_CONTENT",
+      },
+      mounted() {
+        this.init();
+      },
+      methods: {
+        init() {
+          // 获取指定参数值
+          this.scoutId = this.getUrlParam('scoutId');
+          if (this.scoutId == "") {
+            this.alertMessage = "参数错误";
+            $(".modal-button").click();
+          } else {
+            let params = {
+              scoutId: this.scoutId
+            }
+            axios.post(base_ip + "/wuzheng/select/scoutDetial", params).then((response) => {
+              console.log(response.data)
+              if (response.data.code == '200') {
+                // alert('请求成功')
+                this.scoutList = response.data.data.scoutRoom == null ? {} : response.data.data.scoutRoom;
+                this.scoutAtta = response.data.data.scoutAtta;
+                // console.log(this.dataList);
+
+              } else {
+                this.alertMessage = "baseInfoId:" + baseInfoId;
+                $(".modal-button").click();
+
+              }
+            })
+          }
+        },
+        getUrlParam(name) {
+          // 取得url中?后面的字符
+          var query = window.location.search.substring(1);
+          // 把参数按&拆分成数组
+          var param_arr = query.split("&");
+          for (var i = 0; i < param_arr.length; i++) {
+            var pair = param_arr[i].split("=");
+            if (pair[0] == name) {
+              return pair[1];
+            }
+          }
+          return "";
+        },
+
+        mediaEditClick() {
+          $('.input-group input').attr('disabled', false)
+        },
+        mediaSaveClick() {
+          this.scoutList.tableName = "MEDIA_ENVIRONMENT_INFO";
+          this.scoutList.tableId = "MEDIA_ENVIRONMENT_INFO_ID";
+          delete this.scoutList["TYPE_NAME"];
+          delete this.scoutList["MEDIA_TYPE"];
+          axios.post(base_ip + "/wuzhengB/update", this.scoutList).then((response) => {
+            if (response.data.code == '200') {
+
+            } else {
+              this.alertMessage = response.data.code.message;
+              $(".modal-button").click();
+            }
+          })
+          $('.input-group input').attr('disabled', true)
+        }
+      }
+    })
+
+  </script>
+</body>
+
+</html>

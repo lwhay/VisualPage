@@ -1,0 +1,124 @@
+.el-input input{
+    background: rgba(0,0,0,0);
+    color: #fff;
+}
+.el-input__prefix{
+    top:-3px
+}
+.el-input{
+    font-size: 12px;
+}
+.el-picker-panel__body,.el-picker-panel__footer{
+    background: rgba(0,0,0,0.8);
+    color: #fff;
+}
+.el-picker-panel__footer button{
+    background-color: #666666;
+    color: #fff;
+    border-color:#fff;
+    border-radius: .25rem;
+    border: 0px;
+    width: 54px;
+}
+.el-date-table td.current:not(.disabled) span {
+    color: #FFF;
+    background-color: #666666;
+}
+body{
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  font-size: 12px;
+}
+a{
+    color: #fff;
+}
+.modal-content{
+    background: #333333;
+    color: #fff;
+}
+.form-control{
+  color: #fff;
+  background:#494748;
+  font-size: 12px;
+}
+.form-control:focus {
+    background:#494748;
+    color: #fff;
+    border-color:#fff ;
+}
+.input-group-text{
+  background: rgba(0,0,0,0);
+  color: #fff;
+  font-size: 12px;
+  width: 72px;
+  overflow:hidden;
+}
+thead{
+    background: rgba(0,0,0,0);
+    color: #fff;
+    border-bottom: 0px;
+}
+.btn-warning, .btn-primary, .btnmy,.btnmy:hover {
+    background-color: #666666;
+    color: #fff;
+    border-color:#fff;
+    border-radius: .25rem;
+    border: 0px;
+    font-size: 12px;
+    width: 60px;
+    height: 35px;
+}
+.a_ren{
+    color: #fff;
+    background: rgba(0,0,0,0);
+    line-height: 38px;
+    cursor: pointer;
+}
+.form-control:disabled{
+  background:rgba(0,0,0,0);
+}
+#main_content{
+    margin-top: 5px;
+}
+#vue_index #main_content .container {
+  padding-bottom: 6px;
+}
+#vue_index #main_content .container .input-group {
+  padding: 10px 3px 3px 3px;
+}
+#vue_index #main_content .container .input-group .input-label {
+  text-align: right;
+  margin: 0;
+  height: 38px;
+  line-height: 19px;
+}
+#vue_index #main_content .container .input-group .input-label span {
+  text-align: right;
+}
+#vue_index #main_content .container .photo-all .fullPhoto .img-fluid {
+  width: 750px;
+  height: 350px;
+}
+h2,
+h3,
+h4 {
+  text-align: left;
+  font-size: 12px;
+  color: #fff;
+  background: #4e555b;
+  height: 35px;
+  line-height: 35px;
+  padding-left: 15px;
+  margin-top: 10px;
+  border-radius: 3px 3px 0 0;
+}
+.row {
+  margin: 0;
+}
+.el-date-editor {
+  flex: 1;
+}
+.el-input__inner {
+  height: 32px !important;
+  box-sizing: border-box;
+}

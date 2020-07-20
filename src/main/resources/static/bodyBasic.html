@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>尸体详情</title>
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/vue.min.js"></script>
+  <script src="js/axios.min.js"></script>
+  <script src="bootstrap4.5.0/js/bootstrap.min.js"></script>
+  <script src="bootstrap4.5.0/js/popper.min.js"></script>
+  <script src="time/index.js"></script>
+  <link rel="stylesheet" href="bootstrap4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="time/index.css">
+  <link rel="stylesheet" href="css/main.css">
+
+  <!-- <script>
+    $(function () {
+      $("input:text").attr("disabled", true);   // 禁用文本框（设置disabled属性为true）
+    });
+  </script> -->
+
+</head>
+
+<body>
+  <div id="vue_index">
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">提 示</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {{alertMessage}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 图片 -->
+    <div id="layer1" class="modal text-center" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-xl" style="display: inline-block;">
+        <div class="modal-content" style="margin-top: 85px;overflow: auto;max-width: 1000px;max-height: 700px;">
+
+          <div id="img_show" style="padding: 0 20px 20px 20px;">
+            <img :src="'data:image/png;base64,'+ bigpic" class="" alt="Responsive image">
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="layer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" id="dialog_top">
+        <div class="modal-content" style="height: 600px;width: 700px">
+          <div class="modal-header col-h2" style="width: 100%;display: block;border:0px">
+            <h2>详情</h2>
+          </div>
+
+          <div class="modal-body">
+            <form id="defaultForm" method="post" class="form-horizontal">
+              <div class="row">
+
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><!--是否确定-->尸体来源</span>
+                  </div>
+                  <input type="text" disabled class="form-control" id="IS_CORPSE_SOURCE" aria-describedby="basic-addon3"
+                    v-model="corpseTestInfo1.IS_CORPSE_SOURCE">
+                </div>
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><!--体表-->特殊标记</span>
+                  </div>
+
+                  <input type="text" disabled class="form-control" id="SPECIAL_SIGN" aria-describedby="basic-addon3"
+                    v-model="corpseTestInfo1.SPECIAL_SIGN">
+                </div>
+
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">致死原因</span>
+                  </div>
+
+                  <input type="text" disabled class="form-control" id="LETHAL_REASON" aria-describedby="basic-addon3"
+                    v-model="corpseTestInfo1.LETHAL_REASON">
+                </div>
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">死亡时间<!--推论--></span>
+                  </div>
+
+              <!--    <input type="text" disabled class="form-control" id="DEATH_TIME" aria-describedby="basic-addon3"
+                    v-model="corpseTestInfo1.DEATH_TIME">-->
+                  <el-date-picker v-model="corpseTestInfo1.DEATH_TIME" id="DEATH_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                  placeholder="选择日期时间">
+                  </el-date-picker>
+                </div>
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><!--尸体-->加害形式</span>
+                  </div>
+
+                  <input type="text" disabled class="form-control" id="CORPSE_INJURING_FORM"
+                    aria-describedby="basic-addon3" v-model="corpseTestInfo1.CORPSE_INJURING_FORM">
+                </div>
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">死亡性质</span>
+                  </div>
+                  <input type="text" disabled class="form-control" id="DEATH_NATURE" aria-describedby="basic-addon3"
+                    v-model="corpseTestInfo1.DEATH_NATURE">
+                </div>
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><!--尸体-->概貌尸长</span>
+                  </div>
+                  <input type="text" disabled class="form-control" id="CORPSE_GENERAL_PICTURE"
+                    aria-describedby="basic-addon3" v-model="corpseTestInfo1.CORPSE_GENERAL_PICTURE">
+                </div>
+
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">尸斑</span>
+                  </div>
+
+                  <input type="text" disabled class="form-control" id="CADAVERIC_SPOT" aria-describedby="basic-addon3"
+                    v-model="corpseTestInfo1.CADAVERIC_SPOT">
+                </div>
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">尸温</span>
+                  </div>
+                  <input type="text" disabled class="form-control" id="CORPSE_TEMPERATURE"
+                    aria-describedby="basic-addon3" v-model="corpseTestInfo1.CORPSE_TEMPERATURE">
+                </div>
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><!--尸温-->测量时间</span>
+                  </div>
+
+              <!--    <input type="text" disabled class="form-control" id="CORPSE_TEMPERATURE_TIME"
+                    aria-describedby="basic-addon3" v-model="corpseTestInfo1.CORPSE_TEMPERATURE_TIME">-->
+
+                  <el-date-picker v-model="corpseTestInfo1.CORPSE_TEMPERATURE_TIME" id="CORPSE_TEMPERATURE_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                  placeholder="选择日期时间">
+                  </el-date-picker>
+                </div>
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">补充说明</span>
+                  </div>
+
+                  <input type="text" disabled class="form-control" id="SUPPLEMENT_EXPLAIN"
+                    aria-describedby="basic-addon3" v-model="corpseTestInfo1.SUPPLEMENT_EXPLAIN">
+                </div>
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">创建时间</span>
+                  </div>
+<!--
+                  <input type="text" disabled class="form-control" id="CREATE_TIME" aria-describedby="basic-addon3"
+                    v-model="corpseTestInfo1.CREATE_TIME">-->
+                  <el-date-picker v-model="corpseTestInfo1.CREATE_TIME" id="CREATE_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                  placeholder="选择日期时间">
+                  </el-date-picker>
+
+                </div>
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">鉴定时间</span>
+                  </div>
+                 <!-- <input type="text" disabled class="form-control" id="IDEN_TIME" aria-describedby="basic-addon3"
+                         v-model="corpseTestInfo1.IDEN_TIME">-->
+                  <el-date-picker v-model="corpseTestInfo1.IDEN_TIME" id="IDEN_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                  placeholder="选择日期时间">
+                  </el-date-picker>
+
+                </div>
+
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">腐败程度<!--名称--></span>
+                  </div>
+
+                  <input type="text" disabled class="form-control" id="CORRUPT_DEGREE_NAME"
+                    aria-describedby="basic-addon3" v-model="corpseTestInfo1.CORRUPT_DEGREE_NAME">
+                </div>
+
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">尸体<!--概貌-->肤色<!--名称--></span>
+                  </div>
+
+                  <input type="text" disabled class="form-control" id="CORPSE_COLOR_NAME"
+                    aria-describedby="basic-addon3" v-model="corpseTestInfo1.CORPSE_COLOR_NAME">
+                </div>
+
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><!--尸体-->僵硬程度</span>
+                  </div>
+
+                  <input type="text" disabled class="form-control" id="CORPSE_STIFF_DEGREE_NAME"
+                    aria-describedby="basic-addon3" v-model="corpseTestInfo1.CORPSE_STIFF_DEGREE_NAME">
+                </div>
+
+                <div class="input-group col-md-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><!--尸体-->昆虫程度</span>
+                  </div>
+
+                  <input type="text" disabled class="form-control" id="CORPSE_INSECT_DEGREE_NAME"
+                    aria-describedby="basic-addon3" v-model="corpseTestInfo1.CORPSE_INSECT_DEGREE_NAME">
+                </div>
+
+                <div class="input-group col-md-12" style="padding: 15px 25px;">
+                  <span style="margin-right: 20px;">附件：</span>
+                  <a style="margin-right: 25px;" target="_blank" v-for="ige in listFj"
+                    :href="downUrl+'&FILEID='+ige.CORPSE_TEST_ENCLOSURE_ID">{{ige.CORPSE_TEST_ENCLOSURE_NAME}}</a>
+                </div>
+
+              </div>
+
+
+              <!-- <div class="modal-footer">
+                <button type="button" v-on:click="editInput1()" class="btn btn-danger">编辑</button>
+                <button type="button" v-on:click="btnClick()" class="btn btn-primary">保存</button>
+
+                <button class="btn btn-default" data-dismiss="modal">关闭</button>
+              </div> -->
+              <div class="modal-footer">
+                <button type="button" @click="editInput1" class="btnmy" style="width: 60px;height: 38px;">编辑</button>
+                <button type="button" @click="save2Click" class="btnmy" style="width: 60px;height: 38px;">保存</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div id="main_content">
+      <div class="container">
+        <div class="row">
+          <div class="col-12" style="min-height:250px;">
+            <div class="col-h2">
+              <h2>{{bodyBasic.CORPSE_INFO_NAME}}-尸体信息</h2>
+            </div>
+            <div class="row">
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">尸体名称</span>
+                </div>
+                <input type="text" disabled class="form-control" id="CORPSE_INFO_NAME" aria-describedby="basic-addon3"
+                  v-model="bodyBasic.CORPSE_INFO_NAME">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><!--尸体-->发现地点</span>
+                </div>
+
+                <input type="text" disabled class="form-control" id="CORPSE_FIND_PLACE" aria-describedby="basic-addon3"
+                  v-model="bodyBasic.CORPSE_FIND_PLACE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">尸体信息</span>
+                </div>
+
+                <input type="text" disabled class="form-control" id="CORPSE_INFORMATION" aria-describedby="basic-addon3"
+                  v-model="bodyBasic.CORPSE_INFORMATION">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">尸体姿态</span>
+                </div>
+
+                <input type="text" disabled class="form-control" id="CORPSE_ATTITUDE" aria-describedby="basic-addon3"
+                  v-model="bodyBasic.CORPSE_ATTITUDE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><!--现场-->血迹情况</span>
+                </div>
+
+                <input type="text" disabled class="form-control" id="SCENE_BLOODSTAIN_SITUATION"
+                  aria-describedby="basic-addon3" v-model="bodyBasic.SCENE_BLOODSTAIN_SITUATION">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><!--现场-->环境情况</span>
+                </div>
+
+                <input type="text" disabled class="form-control" id="SCENE_ES_SURVEY" aria-describedby="basic-addon3"
+                  v-model="bodyBasic.SCENE_ES_SURVEY">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">随身物品</span>
+                </div>
+
+                <input type="text" disabled class="form-control" id="CARRY_ON_GOODS" aria-describedby="basic-addon3"
+                  v-model="bodyBasic.CARRY_ON_GOODS">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">衣着情况</span>
+                </div>
+
+                <input type="text" disabled class="form-control" id="CLOTHES_SITUATION" aria-describedby="basic-addon3"
+                  v-model="bodyBasic.CLOTHES_SITUATION">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">尸体特征</span>
+                </div>
+
+                <input type="text" disabled class="form-control" id="CORPSE_FEATURES" aria-describedby="basic-addon3"
+                  v-model="bodyBasic.CORPSE_FEATURES">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><!--尸体-->盛装物</span>
+                </div>
+
+                <input type="text" disabled class="form-control" id="CORPSE_COSTUMES" aria-describedby="basic-addon3"
+                  v-model="bodyBasic.CORPSE_COSTUMES">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><!--尸体-->包裹物</span>
+                </div>
+
+                <input type="text" disabled class="form-control" id="CORPSE_INCLUSIONS" aria-describedby="basic-addon3"
+                  v-model="bodyBasic.CORPSE_INCLUSIONS">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><!--尸体-->解剖信息</span>
+                </div>
+
+                <input type="text" disabled class="form-control" id="CORPSE_ANATOMY_INFORMATION"
+                  aria-describedby="basic-addon3" v-model="bodyBasic.CORPSE_ANATOMY_INFORMATION">
+              </div>
+
+              <!-- <div class="" style="margin: auto">
+                <button type="button col-md-5" v-on:click="editInput()" class="btn btn-danger">编辑</button>                  btnClick
+                <button type="button col-md-7" v-on:click="editBody()" class="btn btn-primary">保存</button>                  btn2Click
+              </div> -->
+              <div class="input-btn col-md-12" style="display: flex;justify-content: center;
+              padding: 10px;">
+                <button type="button col-md-5" @click="btnClick" class="btnmy"
+                  style="margin-right: 30px;">编辑</button>
+                <button type="button col-md-7" @click="btn2Click" class="btnmy">保存</button>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="col-h2">
+            <h2>-尸体照片</h2>
+          </div>
+          <div class="row">
+            <div v-for="bp in corpseCorpsePhoto">
+              <img v-on:click="bigpicture(bp.CORPSE_PHOTO_CONTENT)"
+                style="width: 150px;height: 100px;padding:3px 20px 10px 5px"
+                :src="'data:image/png;base64,'+bp.CORPSE_PHOTO_CONTENT" class="" alt="Responsive image">
+            </div>
+          </div>
+        </div>
+        <br />
+
+        <div class="col-h2">
+          <h2>-尸体检验信息</h2>
+        </div>
+        <div class="row">
+          <!-- table-hover -->
+          <table class="table table-striped table-bordered" style="text-align: center">
+            <thead>
+              <tr>
+                <th>是否确定尸体来源</th>
+                <th>体表特殊标记</th>
+                <th>致死原因</th>
+                <th>死亡时间推论</th>
+                <th>尸体加害形式</th>
+                <th>死亡性质</th>
+                <th>详细</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="c in corpseTestInfo" style="color: #fff">
+                <td>{{c.IS_CORPSE_SOURCE}}</td>
+                <td>{{c.SPECIAL_SIGN}}</td>
+                <td>{{c.LETHAL_REASON}}</td>
+                <td>{{c.DEATH_TIME}}</td>
+                <td>{{c.CORPSE_INJURING_FORM}}</td>
+                <td>{{c.DEATH_NATURE}}</td>
+                <td>
+                  <div id="bottom">
+                    <div class="bottom" data-toggle="modal" data-target="#layer"
+                      v-on:click="selectDetial(c.CORPSE_TEST_INFO_ID)"><a href="#">查看详情</a>
+                    </div>
+                  </div>
+                </td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+<script src="config/config.js"></script>
+<script>
+  var vm = new Vue({
+    el: '#vue_index',
+    data: {
+      alertMessage: "1",
+      bodyId: "",
+      bodyBasic: {},
+      corpseTestInfo: [],
+      corpseCorpsePhoto: [],
+      corpseTestInfo1: {},
+      bigpic: {},
+      downUrl: base_ip + "/wuzhengB/down?tableName=CORPSE_TEST_ENCLOSURE&tableIdName=CORPSE_TEST_ENCLOSURE_ID&tableFileName=CORPSE_TEST_ENCLOSURE_NAME&tableFileContent=CORPSE_TEST_ENCLOSURE_CONTENT",
+      listFj: []
+    },
+    mounted() {
+      this.init();
+      // alert(this.alertMessage)
+    },
+    methods: {
+      init() {
+        this.bodyId = getUrlParam('bodyId');
+        if (this.bodyId == "") {
+          this.alertMessage = "参数错误";
+        } else {
+          let params = {
+            bodyId: this.bodyId
+          }
+          axios.post(base_ip + "/wuzheng/select/bodyBasic", params)
+            .then(response => {
+              if (response.data.code == '200') {
+                this.bodyBasic = response.data.data.bodyBasic == null ? {} : response.data.data.bodyBasic;
+                this.corpseTestInfo = response.data.data.corpseTestInfo == null ? {} : response.data.data.corpseTestInfo;
+                this.corpseCorpsePhoto = response.data.data.corpseCorpsePhoto == null ? {} : response.data.data.corpseCorpsePhoto;
+              }
+            })
+            .catch(function (error) { // 请求失败处理
+              console.log(error);
+            });
+        }
+      },
+      selectDetial(c) {
+        axios.post(base_ip + "/wuzheng/select/bodyBasicDetial?id=" + c)
+          .then(response => {
+            if (response.data.code == '200') {
+              this.corpseTestInfo1 = response.data.data.corpseTestInfo == null ? {} : response.data.data.corpseTestInfo;
+              this.listFj = response.data.data.listFj == null ? {} : response.data.data.listFj;
+            }
+          })
+          .catch(function (error) { // 请求失败处理
+            console.log(error);
+          });
+      },
+      bigpicture(pic) {
+        this.bigpic = pic
+        $('#layer1').modal("show");
+      },
+      btnClick() {
+        $(".input-group input").attr("disabled", false);   // 禁用文本框（设置disabled属性为true）
+      },
+      editInput1() {
+        $('.modal-body input').attr('disabled', false)
+      },
+      btn2Click() {
+        axios.post(base_ip + "/wuzheng/update", this.bodyBasic).then((response) => {
+          if (response.data.code == '200') {
+
+          } else {
+            this.alertMessage = response.data.code.message;
+            $(".modal-button").click();
+          }
+        })
+        $(".input-group input").attr("disabled", true);
+      },
+      save2Click() {
+
+        this.corpseTestInfo1.tableName = "CORPSE_TEST_INFO";
+        this.corpseTestInfo1.tableId = "CORPSE_TEST_INFO_ID";
+        delete this.corpseTestInfo1["CORRUPT_DEGREE_NAME"];
+        delete this.corpseTestInfo1["CORPSE_COLOR_NAME"];
+        delete this.corpseTestInfo1["CORPSE_STIFF_DEGREE_NAME"];
+        delete this.corpseTestInfo1["CORPSE_INSECT_DEGREE_NAME"];
+        axios.post(base_ip + "/wuzhengB/update", this.corpseTestInfo1).then((response) => {
+          if (response.data.code == '200') {
+
+          } else {
+            this.alertMessage = response.data.code.message;
+            $(".modal-button").click();
+          }
+        })
+        $('.modal-body input').attr('disabled', true)
+      }
+    }
+  })
+
+  function getUrlParam(name) {
+    // 取得url中?后面的字符
+    var query = window.location.search.substring(1);
+    // 把参数按&拆分成数组
+    var param_arr = query.split("&");
+    for (var i = 0; i < param_arr.length; i++) {
+      var pair = param_arr[i].split("=");
+      if (pair[0] == name) {
+        return pair[1];
+      }
+    }
+    return "";
+  }
+</script>
+
+</html>

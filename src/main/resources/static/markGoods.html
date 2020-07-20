@@ -1,0 +1,721 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>痕迹物品详情</title>
+
+  <link rel="stylesheet" href="bootstrap4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="time/index.css">
+
+  <link rel="stylesheet" href="css/main.css">
+
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/vue.min.js"></script>
+  <script src="js/axios.min.js"></script>
+  <script src="bootstrap4.5.0/js/bootstrap.min.js"></script>
+  <script src="bootstrap4.5.0/js/popper.min.js"></script>
+  <script src="time/index.js"></script>
+
+  <style>
+    .suoimg {
+      width: 310px;
+      height: 160px;
+      padding: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="vue_index">
+    <!-- M模态框 -->
+    <button type="button" class="btn btn-primary modal-button" data-toggle="modal" data-target="#exampleModal"
+      style="display: none">
+      触发模态框按钮
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">提 示</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {{alertMessage}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary person-button" data-toggle="modal" data-target="#staticBackdrop"
+      style="display: none">
+      涉案人员触发模态框按钮
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">涉案人员</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body row">
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">人员编号</span>
+              </div>
+              <input type="text" disabled class="form-control" id="INVOLVED_PERSON_CODE" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.INVOLVED_PERSON_CODE">
+            </div>
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">人员姓名</span>
+              </div>
+              <input type="text" disabled class="form-control" id="INVOLVED_PERSON_NAME" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.INVOLVED_PERSON_NAME">
+            </div>
+
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">性别</span>
+              </div>
+              <input type="text" disabled class="form-control" id="SEX" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.SEX">
+            </div>
+
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">年龄</span>
+              </div>
+              <input type="text" disabled class="form-control" id="AGE" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.AGE">
+            </div>
+
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">民族</span>
+              </div>
+              <input type="text" disabled class="form-control" id="NATION" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.NATION">
+            </div>
+
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">国籍</span>
+              </div>
+              <input type="text" disabled class="form-control" id="NATIONALITY" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.NATIONALITY">
+            </div>
+
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">体态</span>
+              </div>
+              <input type="text" disabled class="form-control" id="POSTURE" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.POSTURE">
+            </div>
+
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">身高</span>
+              </div>
+              <input type="text" disabled class="form-control" id="HEIGHT" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.HEIGHT">
+            </div>
+
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">衣着情况</span>
+              </div>
+              <input type="text" disabled class="form-control" id="CLOTHES_SITUATION" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.CLOTHES_SITUATION">
+            </div>
+
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">生理机能</span>
+              </div>
+              <input type="text" disabled class="form-control" id="PHY_FUN" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.PHY_FUN">
+            </div>
+
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">户籍地</span>
+              </div>
+              <input type="text" disabled class="form-control" id="DOMICILE" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.DOMICILE">
+            </div>
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">证件号码</span>
+              </div>
+              <input type="text" disabled class="form-control" id="CARD_NUMBER" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.CARD_NUMBER">
+            </div>
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">现住址</span>
+              </div>
+              <input type="text" disabled class="form-control" id="CURRENT_ADDRESS" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.CURRENT_ADDRESS">
+            </div>
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">工作单位</span>
+              </div>
+              <input type="text" disabled class="form-control" id="WORK_UNIT" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.WORK_UNIT">
+            </div>
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">单位地址</span>
+              </div>
+              <input type="text" disabled class="form-control" id="UNIT_ADDRESS" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.UNIT_ADDRESS">
+            </div>
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">电话</span>
+              </div>
+              <input type="text" disabled class="form-control" id="PHONE" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.PHONE">
+            </div>
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">职务</span>
+              </div>
+              <input type="text" disabled class="form-control" id="JOB_DUTIES" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.JOB_DUTIES">
+            </div>
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">调查时间</span>
+              </div>
+            <!--  <input type="text" disabled class="form-control" id="INVESTIGATION_TIME" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.INVESTIGATION_TIME">-->
+              <el-date-picker v-model="involvedPersonInfo.INVESTIGATION_TIME" id="INVESTIGATION_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                              placeholder="选择日期时间">
+              </el-date-picker>
+            </div>
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">调查人</span>
+              </div>
+              <input type="text" disabled class="form-control" id="INVESTIGATION_PERSION"
+                aria-describedby="basic-addon3" v-model="involvedPersonInfo.INVESTIGATION_PERSION">
+            </div>
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">调查地点</span>
+              </div>
+              <input type="text" disabled class="form-control" id="INVESTIGATION_ADDRESS"
+                aria-describedby="basic-addon3" v-model="involvedPersonInfo.INVESTIGATION_ADDRESS">
+            </div>
+            <div class="input-group col-md-6">
+              <div class="input-group-prepend">
+                <span class="input-group-text">备注</span>
+              </div>
+              <input type="text" disabled class="form-control" id="REMARKS" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.REMARKS">
+            </div>
+         <!--   <div class="input-group col-md-12">
+              <div class="input-group-prepend">
+                <span class="input-group-text">关联尸体信息</span>
+              </div>
+              <input type="text" disabled class="form-control" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.RELATION_CORPSE">
+            </div>-->
+            <!--<div class="input-group col-md-12">
+              <div class="input-group-prepend">
+                <span class="input-group-text">关联涉案人员</span>
+              </div>
+              <input type="text" disabled class="form-control" aria-describedby="basic-addon3"
+                v-model="involvedPersonInfo.RELATION_PERSON">
+            </div>-->
+          </div>
+          <div class="modal-footer">
+            <button type="button" @click="modelBtnClick" class="btnmy" style="width: 60px;height: 38px;">编辑</button>
+            <button type=" button" @click="modelBtn2Click" class="btnmy" style="width: 60px;height: 38px;">保存</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 图片 -->
+    <div id="ShowImage_Form" class="modal text-center" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-xl" style="display: inline-block;">
+        <div class="modal-content" style="margin-top: 85px;overflow: auto;max-width: 1000px;max-height: 700px;">
+          <div id="img_show">
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="main_content">
+      <div class="container">
+        <!-- <div class="row">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">{{markGoods.MARK_GOODS_NAME}}</li>
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Library</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Data</li>
+            </ol>
+          </nav>
+        </div>-->
+        <div class="row">
+          <div class="col-12" style="min-height:500px;">
+            <!--操作-->
+            <h2>{{markGoods.MARK_GOODS_NAME}}-痕迹物品详情</h2>
+            <div class="row">
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">物品名称</span>
+                </div>
+                <input type="text" disabled class="form-control" id="MARK_GOODS_NAME" aria-describedby="basic-addon3"
+                  v-model="markGoods.MARK_GOODS_NAME">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">物品类型</span>
+                </div>
+                <input type="text" disabled class="form-control" id="GOODS_TYPE_NAME" aria-describedby="basic-addon3"
+                  v-model="goodsType.GOODS_TYPE_NAME">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">检材类型</span>
+                </div>
+                <input type="text" disabled class="form-control" id="SAMPLE_MATERIAL_NAME"
+                  aria-describedby="basic-addon3" v-model="sampleMaterial.SAMPLE_MATERIAL_NAME">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">提取方法</span>
+                </div>
+                <input type="text" disabled class="form-control" id="EXTRACT_METHOD_NAME"
+                  aria-describedby="basic-addon3" v-model="extractMethod.EXTRACT_METHOD_NAME">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">物品状态</span>
+                </div>
+                <input type="text" disabled class="form-control" id="MARK_GOODS_STATE" aria-describedby="basic-addon3"
+                  v-model="markGoods.MARK_GOODS_STATE">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">提取位置</span>
+                </div>
+                <input type="text" disabled class="form-control" id="EXTRACT_POSITION" aria-describedby="basic-addon3"
+                  v-model="markGoods.EXTRACT_POSITION">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">尺寸大小</span>
+                </div>
+                <input type="text" disabled class="form-control" id="MARK_GOODS_SIZE" aria-describedby="basic-addon3"
+                  v-model="markGoods.MARK_GOODS_SIZE">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">物质组成</span>
+                </div>
+                <input type="text" disabled class="form-control" id="MATERIAL_FORM" aria-describedby="basic-addon3"
+                  v-model="markGoods.MATERIAL_FORM">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">外观特点</span>
+                </div>
+                <input type="text" disabled class="form-control" id="APPEARANCE_CHAR" aria-describedby="basic-addon3"
+                  v-model="markGoods.APPEARANCE_CHAR">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">提取时间</span>
+                </div>
+              <!--  <input type="text" disabled class="form-control" id="EXTRACT_TIME" aria-describedby="basic-addon3"
+                  v-model="markGoods.EXTRACT_TIME">-->
+
+                <el-date-picker v-model="markGoods.EXTRACT_TIME" id="EXTRACT_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="选择日期时间">
+                </el-date-picker>
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">提取人</span>
+                </div>
+                <input type="text" disabled class="form-control" id="EXTRACT_PERSON" aria-describedby="basic-addon3"
+                  v-model="markGoods.EXTRACT_PERSON">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">创建时间</span>
+                </div>
+              <!--  <input type="text" disabled class="form-control" id="CREATE_TIME" aria-describedby="basic-addon3"
+                  v-model="markGoods.CREATE_TIME">-->
+                <el-date-picker v-model="markGoods.CREATE_TIME" id="CREATE_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                placeholder="选择日期时间">
+                </el-date-picker>
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">鉴定状态</span>
+                </div>
+                <input type="text" disabled class="form-control" id="TEST_STATE" aria-describedby="basic-addon3"
+                  v-model="markGoods.TEST_STATE">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">数据来源</span>
+                </div>
+                <input type="text" disabled class="form-control" id="DATA_SOURCES" aria-describedby="basic-addon3"
+                  v-model="markGoods.DATA_SOURCES">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">提取数量</span>
+                </div>
+                <input type="text" disabled class="form-control" id="EXTRACT_NUMBER" aria-describedby="basic-addon3"
+                  v-model="markGoods.EXTRACT_NUMBER">
+              </div>
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">描述</span>
+                </div>
+                <input type="text" disabled class="form-control" id="MARK_GOODS_DESCRIBE"
+                  aria-describedby="basic-addon3" v-model="markGoods.MARK_GOODS_DESCRIBE">
+              </div>
+
+              <!--          <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">鉴定时间</span>
+                </div>
+                <input type="text" disabled class="form-control" id="IDEN_TIME" aria-describedby="basic-addon3"
+                  v-model="markGoods.IDEN_TIME">
+              </div>-->
+
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">形成方式</span>
+                </div>
+                <input type="text" disabled class="form-control" id="WAY_OF_FOR" aria-describedby="basic-addon3"
+                  v-model="markGoods.WAY_OF_FOR">
+              </div>
+
+           <!--   <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">关联涉案人员</span>
+                </div>
+                <input type="text" disabled class="form-control" id="RELATION_PERSON" aria-describedby="basic-addon3"
+                  v-model="markGoods.RELATION_PERSON">
+              </div>-->
+
+              <!--<div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">关联涉案物品</span>
+                </div>
+                <input type="text" disabled class="form-control" id="RELATION_GOODS" aria-describedby="basic-addon3"
+                  v-model="markGoods.RELATION_GOODS">
+              </div>-->
+
+          <!--    <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">关联尸体信息</span>
+                </div>
+                <input type="text" disabled class="form-control" id="RELATION_CORPSE" aria-describedby="basic-addon3"
+                  v-model="markGoods.RELATION_CORPSE">
+              </div>-->
+
+            <!--  <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">是否痕迹物品转换涉案物品</span>
+                </div>
+                <input type="text" disabled class="form-control" id="IS_MARK_GOODS" aria-describedby="basic-addon3"
+                  v-model="markGoods.IS_MARK_GOODS">
+              </div>-->
+
+           <!--   <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">现勘数据类型</span>
+                </div>
+                <input type="text" disabled class="form-control" id="XCKY_DATA_TYPE" aria-describedby="basic-addon3"
+                  v-model="markGoods.XCKY_DATA_TYPE">
+              </div>-->
+              <div class="input-btn col-md-12" style="display: flex;justify-content: center;
+              padding: 10px;">
+                <button type="button col-md-5" @click="btnClick" class="btnmy"
+                  style="margin-right: 30px;">编辑</button>
+                <button type="button col-md-7" @click="btn2Click" class="btnmy">保存</button>
+              </div>
+            </div>
+            <h4>{{markGoods.MARK_GOODS_NAME}}-全貌照片</h4>
+            <div class="row">
+              <div v-for="fp in fullPhoto">
+                <img :src="'data:image/png;base64,'+fp.FULL_PHOTO_CONTENT" class="bigImg suoimg" alt="Responsive image"
+                  onmouseover="this.style.cursor='pointer';this.style.cursor='hand'"
+                  onmouseout="this.style.cursor='default'" v-on:click="showImg(fp.FULL_PHOTO_CONTENT)">
+              </div>
+            </div>
+            <h4>{{markGoods.MARK_GOODS_NAME}}-方位照片</h4>
+            <div class="row">
+              <div v-for="pp in positionPhoto">
+                <img :src="'data:image/png;base64,'+pp.POSITION_PHOTO_CONTENT"
+                  v-on:click="showImg(pp.POSITION_PHOTO_CONTENT)" class="positionImg suoimg" alt="Responsive image"
+                  onmouseover="this.style.cursor='pointer';this.style.cursor='hand'"
+                  onmouseout="this.style.cursor='default'">
+              </div>
+            </div>
+            <h4>{{markGoods.MARK_GOODS_NAME}}-痕迹物品检验信息</h4>
+            <div class="row">
+              <!-- table-hover -->
+              <table class="table table-bordered table-striped" style="text-align: center">
+                <thead>
+                  <tr>
+                    <th>送检类型</th>
+                    <th>遗留部位名称</th>
+                    <th>单位名称</th>
+                    <th>送检数量</th>
+                    <th>涉案人员</th>
+                    <th>鉴定结论</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(mgti,index) in markGoodsTestInfo" :key="index">
+                    <td>
+                      <input type="text" disabled class="form-control" id="INSPECTION_TYPE_NAME"
+                        aria-describedby="basic-addon3" v-model="mgti.INSPECTION_TYPE_NAME">
+                    </td>
+                    <td>
+                      <input type="text" disabled class="form-control" id="LEFT_OVER_POSITION_NAME"
+                        aria-describedby="basic-addon3" v-model="mgti.LEFT_OVER_POSITION_NAME">
+                    </td>
+                    <td>
+                      <input type="text" disabled class="form-control" id="MARK_GOODS_UNIT_NAME"
+                        aria-describedby="basic-addon3" v-model="mgti.MARK_GOODS_UNIT_NAME">
+                    </td>
+                    <td>
+                      <input type="text" disabled class="form-control" id="INSPECTION_NUMBER"
+                        aria-describedby="basic-addon3" v-model="mgti.INSPECTION_NUMBER">
+                    </td>
+                    <td style="width: 10%;">
+                      <span class="a_ren" v-for="ilp in mgti.involvedPersonInfo"
+                        v-on:click="personDetail(ilp)">{{ilp.INVOLVED_PERSON_NAME}}</span>
+                    </td>
+                    <td>
+                      <input type="text" disabled class="form-control" id="APPRAISAL_CONCLUSION"
+                        aria-describedby="basic-addon3" v-model="mgti.APPRAISAL_CONCLUSION">
+                    </td>
+                    <td style="width: 10%;">
+                      <button type="button col-md-5" @click="td_btnClick(mgti,$event)" class="btnmy">编辑</button>
+                      <!-- <button type="button col-md-7" @click.stop="td_btn2Click" class="btn btn-primary">保存</button> -->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config/config.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#vue_index',
+      data: {
+        alertMessage: "",
+        markGoodsId: "",
+        extractMethod: {},
+        goodsType: {},
+        markGoods: {},
+        sampleMaterial: {},
+        fullPhoto: [],
+        positionPhoto: [],
+        markGoodsTestInfo: [],
+        involvedPersonInfo: {},
+        count: 0
+      },
+      mounted() {
+        this.init();
+        console.log(this.markGoods);
+      },
+      watch: {
+        // 进行深度监听
+        markGoods: {
+          deep: true,
+          //使用handler来处理变化
+          handler(newVal) {
+            //这个newVal就是监听的对象更新后的值
+            console.log("我变化了", newVal);
+            this.markGoods = newVal
+          }
+        }
+      },
+      methods: {
+        init() {
+          // 获取指定参数值
+          this.markGoodsId = this.getUrlParam('markGoodsId');
+          if (this.markGoodsId == "") {
+            this.alertMessage = "参数错误";
+            $(".modal-button").click();
+          } else {
+            let params = {
+              markGoodsId: this.markGoodsId
+            }
+            axios.post(base_ip + "/wuzhengB/select/markGoods", params).then((response) => {
+              console.log(response.data.data)
+              if (response.data.code == '200') {
+                this.extractMethod = response.data.data.extractMethod == null ? {} : response.data.data.extractMethod;
+                this.goodsType = response.data.data.goodsType == null ? {} : response.data.data.goodsType;
+                this.markGoods = response.data.data.markGoods == null ? {} : response.data.data.markGoods;
+                this.sampleMaterial = response.data.data.sampleMaterial == null ? {} : response.data.data.sampleMaterial;
+                this.fullPhoto = response.data.data.fullPhoto;
+                this.positionPhoto = response.data.data.positionPhoto;
+                this.markGoodsTestInfo = response.data.data.markGoodsTestInfo;
+              } else {
+                this.alertMessage = response.data.code.message;
+                $(".modal-button").click();
+              }
+            })
+          }
+        },
+        getUrlParam(name) {
+          // 取得url中?后面的字符
+          var query = window.location.search.substring(1);
+          // 把参数按&拆分成数组
+          var param_arr = query.split("&");
+          for (var i = 0; i < param_arr.length; i++) {
+            var pair = param_arr[i].split("=");
+            if (pair[0] == name) {
+              return pair[1];
+            }
+          }
+          return "";
+        },
+        personDetail(ilp) {
+          this.involvedPersonInfo = ilp
+          $(".person-button").click()
+        },
+        showImg(base64str) {
+          $("#ShowImage_Form").find("#img_show").html("<image src='" + "data:image/png;base64," + base64str + "'/>");
+          $("#ShowImage_Form").modal();
+        },
+        btnClick() {
+          $('.input-group input').attr('disabled', false)
+        },
+        btn2Click() {
+          this.markGoods.tableName = "MARK_GOODS";
+          this.markGoods.tableId = "MARK_GOODS_ID";
+          axios.post(base_ip + "/wuzhengB/update", this.markGoods).then((response) => {
+            if (response.data.code == '200') {
+
+            } else {
+              this.alertMessage = response.data.code.message;
+              $(".modal-button").click();
+            }
+          })
+          $('.input-group input').attr('disabled', true)
+        },
+        td_btnClick(mgti, e) {
+          console.log(mgti);
+          let that = $(this)
+          if (e.target.innerText == '编辑') {
+            $('table td button').text('保存')
+            $('table td button').attr('class', 'btnmy')
+      /*      $('table td button').css('backgroundColor', '#2196f3')*/
+            $('table tr input').attr('disabled', false)
+          } else {
+            $('table td button').text('编辑')
+            $('table td button').attr('class', 'btnmy')
+         /*   $('table td button').css('backgroundColor', '#ec8b0b')*/
+            $('table tr input').attr('disabled', true)
+            let param = {
+              INSPECTION_NUMBER: mgti.INSPECTION_NUMBER,
+              APPRAISAL_CONCLUSION: mgti.APPRAISAL_CONCLUSION,
+              MARK_GOODS_TEST_INFO_ID: mgti.MARK_GOODS_TEST_INFO_ID,
+              tableName: "MARK_GOODS_TEST_INFO",
+              tableId: "MARK_GOODS_TEST_INFO_ID"
+            }
+            axios.post(base_ip + "/wuzhengB/update", param).then((response) => {
+              if (response.data.code == '200') {
+
+              } else {
+                this.alertMessage = response.data.code.message;
+                $(".modal-button").click();
+              }
+            })
+
+
+
+
+          }
+          $(this).parent().siblings("td").each(function () {  // 获取当前行的其他单元格
+            var obj_text = $(this).find("input:text");    // 判断单元格下是否有文本框
+            if (!obj_text.length) {
+
+            }  // 如果没有文本框，则添加文本框使之可以编辑
+            // $(this).html("<input type='text' value='"+$(this).text()+"'>");
+            // else
+            //     $(this).html(obj_txet.val());
+          });
+        },
+        // td_btn2Click() {
+        //   $('table input').attr('disabled', true)
+        // },
+        modelBtnClick() {
+          $('.modal-body input').attr('disabled', false)
+        },
+        modelBtn2Click() {
+          this.involvedPersonInfo.tableName = "INVOLVED_PERSON_INFO";
+          this.involvedPersonInfo.tableId = "INVOLVED_PERSON_INFO_ID";
+          axios.post(base_ip + "/wuzhengB/update", this.involvedPersonInfo).then((response) => {
+            if (response.data.code == '200') {
+
+            } else {
+              this.alertMessage = response.data.code.message;
+              $(".modal-button").click();
+            }
+          })
+          $('.modal-body input').attr('disabled', true)
+        }
+      }
+    })
+
+  </script>
+</body>
+
+</html>

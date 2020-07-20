@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>涉案人员</title>
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/vue.min.js"></script>
+  <script src="js/axios.min.js"></script>
+  <script src="bootstrap4.5.0/js/bootstrap.min.js"></script>
+  <script src="bootstrap4.5.0/js/popper.min.js"></script>
+    <script src="time/index.js"></script>
+  <link rel="stylesheet" href="bootstrap4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="time/index.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+  <div id="vue_index">
+    <!-- M模态框 -->
+    <button type="button" class="btn btn-primary modal-button" data-toggle="modal" data-target="#exampleModal"
+      style="display: none">
+      触发模态框按钮
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">提 示</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {{alertMessage}}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="main_content">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <div class="col-h2">
+              <h2>{{involvedPersonInfo.INVOLVED_PERSON_NAME}}-涉案人员</h2>
+            </div>
+            <div class="row">
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">涉案人员信息ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_PERSON_INFO_ID"
+                  aria-describedby="basic-addon3">
+              </div>-->
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">人员编号</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_PERSON_CODE"
+                  aria-describedby="basic-addon3" v-model="involvedPersonInfo.INVOLVED_PERSON_CODE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">人员姓名</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVOLVED_PERSON_NAME"
+                  aria-describedby="basic-addon3" v-model="involvedPersonInfo.INVOLVED_PERSON_NAME">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">性别</span>
+                </div>
+                <input type="text" disabled class="form-control" id="SEX" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.SEX">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">年龄</span>
+                </div>
+                <input type="text" disabled class="form-control" id="AGE" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.AGE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">民族</span>
+                </div>
+                <input type="text" disabled class="form-control" id="NATION" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.NATION">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">国籍</span>
+                </div>
+                <input type="text" disabled class="form-control" id="NATIONALITY" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.NATIONALITY">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">体态</span>
+                </div>
+                <input type="text" disabled class="form-control" id="POSTURE" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.POSTURE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">身高</span>
+                </div>
+                <input type="text" disabled class="form-control" id="HEIGHT" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.HEIGHT">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">衣着情况</span>
+                </div>
+                <input type="text" disabled class="form-control" id="CLOTHES_SITUATION" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.CLOTHES_SITUATION">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">生理机能</span>
+                </div>
+                <input type="text" disabled class="form-control" id="PHY_FUN" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.PHY_FUN">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">证件类型</span>
+                </div>
+                <input type="text" disabled class="form-control" id="CARD_TYPE" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.CARD_TYPE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">户籍地</span>
+                </div>
+                <input type="text" disabled class="form-control" id="DOMICILE" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.DOMICILE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">证件号码</span>
+                </div>
+                <input type="text" disabled class="form-control" id="CARD_NUMBER" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.CARD_NUMBER">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">现住址</span>
+                </div>
+                <input type="text" disabled class="form-control" id="CURRENT_ADDRESS" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.CURRENT_ADDRESS">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">工作单位</span>
+                </div>
+                <input type="text" disabled class="form-control" id="WORK_UNIT" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.WORK_UNIT">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">单位地址</span>
+                </div>
+                <input type="text" disabled class="form-control" id="UNIT_ADDRESS" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.UNIT_ADDRESS">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">电话</span>
+                </div>
+                <input type="text" disabled class="form-control" id="PHONE" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.PHONE">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">职务</span>
+                </div>
+                <input type="text" disabled class="form-control" id="JOB_DUTIES" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.JOB_DUTIES">
+              </div>
+              <!--<div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">勘验基础信息ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="BASE_INFO_ID" aria-describedby="basic-addon3">
+              </div>-->
+              <!--<div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">物品人员ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="REL_PERSON_INFO_ID"
+                  aria-describedby="basic-addon3">
+              </div>-->
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">调查时间</span>
+                </div>
+         <!--       <input type="text" disabled class="form-control" id="INVESTIGATION_TIME" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.INVESTIGATION_TIME">-->
+                  <el-date-picker v-model="involvedPersonInfo.INVESTIGATION_TIME" id="INVESTIGATION_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                  placeholder="选择日期时间">
+                  </el-date-picker>
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">调查人</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVESTIGATION_PERSION"
+                  aria-describedby="basic-addon3" v-model="involvedPersonInfo.INVESTIGATION_PERSION">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">调查地点</span>
+                </div>
+                <input type="text" disabled class="form-control" id="INVESTIGATION_ADDRESS"
+                  aria-describedby="basic-addon3" v-model="involvedPersonInfo.INVESTIGATION_ADDRESS">
+              </div>
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">备注</span>
+                </div>
+                <input type="text" disabled class="form-control" id="REMARKS" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.REMARKS">
+              </div>
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">创建人ID</span>
+                </div>
+                <input type="text" disabled class="form-control" id="CREATE_PERSON_ID" aria-describedby="basic-addon3">
+              </div>-->
+              <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">创建时间</span>
+                </div>
+        <!--        <input type="text" disabled class="form-control" id="CREATE_TIME" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.CREATE_TIME">-->
+                  <el-date-picker v-model="involvedPersonInfo.CREATE_TIME" id="CREATE_TIME" type="datetime"  format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
+                                  placeholder="选择日期时间">
+                  </el-date-picker>
+              </div>
+            <!--  <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">修改时间</span>
+                </div>
+                <input type="text" disabled class="form-control" id="UPDATE_TIME" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.UPDATE_TIME">
+              </div>-->
+            <!--  <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">数据来源</span>
+                </div>
+                <input type="text" disabled class="form-control" id="DATA_SOURCES" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.DATA_SOURCES">
+              </div>-->
+             <!-- <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">数据状态</span>
+                </div>
+                <input type="text" disabled class="form-control" id="DATA_STATE" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.DATA_STATE">
+              </div>-->
+              <!--<div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">关联尸体信息</span>
+                </div>
+                <input type="text" disabled class="form-control" id="RELATION_CORPSE" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.RELATION_CORPSE">
+              </div>-->
+            <!--  <div class="input-group col-md-6">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">关联涉案人员</span>
+                </div>
+                <input type="text" disabled class="form-control" id="RELATION_PERSON" aria-describedby="basic-addon3"
+                  v-model="involvedPersonInfo.RELATION_PERSON">
+              </div>-->
+
+              <div class="input-btn col-md-12" style="display: flex;justify-content: center;padding: 10px;">
+                <button type="button" @click="involvedEditClick" class="btnmy"
+                  style="margin-right: 30px;">编辑</button>
+                <button type="button" @click="involvedSaveClick" class="btnmy">保存</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config/config.js"></script>
+  <script>
+    var vm = new Vue({
+      el: '#vue_index',
+      data: {
+        alertMessage: "1",
+        involvedPersonInfoId: "",
+        involvedPersonInfo: {}
+      },
+      mounted() {
+        this.init();
+      },
+      methods: {
+        init() {
+          // 获取指定参数值
+          this.involvedPersonInfoId = this.getUrlParam('involvedPersonInfoId');
+          if (this.involvedPersonInfoId == "") {
+            this.alertMessage = "参数错误";
+            $(".modal-button").click();
+          } else {
+            let params = {
+              involvedPersonInfoId: this.involvedPersonInfoId
+            }
+            axios.post(base_ip + "/wuzhengB/select/involvedPersonInfo", params).then((response) => {
+              console.log(response.data)
+              console.log(params);
+              if (response.data.code == '200') {
+                // alert('请求成功')
+                this.involvedPersonInfo = response.data.data.involvedPersonInfo == null ? {} : response.data.data.involvedPersonInfo;
+
+              } else {
+                this.alertMessage = "baseInfoId:" + baseInfoId;
+                $(".modal-button").click();
+
+              }
+            })
+          }
+        },
+        getUrlParam(name) {
+          // 取得url中?后面的字符
+          var query = window.location.search.substring(1);
+          // 把参数按&拆分成数组
+          var param_arr = query.split("&");
+          for (var i = 0; i < param_arr.length; i++) {
+            var pair = param_arr[i].split("=");
+            if (pair[0] == name) {
+              return pair[1];
+            }
+          }
+          return "";
+        },
+        involvedEditClick() {
+          $('.input-group input').attr('disabled', false)
+        },
+        involvedSaveClick() {
+          this.involvedPersonInfo.tableName = "INVOLVED_PERSON_INFO";
+          this.involvedPersonInfo.tableId = "INVOLVED_PERSON_INFO_ID";
+          axios.post(base_ip + "/wuzhengB/update", this.involvedPersonInfo).then((response) => {
+            if (response.data.code == '200') {
+
+            } else {
+              this.alertMessage = response.data.code.message;
+              $(".modal-button").click();
+            }
+          })
+          $('.input-group input').attr('disabled', true)
+        }
+      }
+    })
+
+  </script>
+</body>
+
+</html>
