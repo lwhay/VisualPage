@@ -1,18 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>现场详情</title>
+    <title>现场重建</title>
+
+    <link rel="stylesheet" href="bootstrap4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="time/index.css">
+
+    <link rel="stylesheet" href="css/main.css">
+
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/vue.min.js"></script>
     <script src="js/axios.min.js"></script>
     <script src="bootstrap4.5.0/js/bootstrap.min.js"></script>
     <script src="bootstrap4.5.0/js/popper.min.js"></script>
-    <link rel="stylesheet" href="bootstrap4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="time/index.js"></script>
+
+    <style>
+        .suoimg {
+            width: 310px;
+            height: 160px;
+            padding: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -49,7 +59,7 @@
                 <div class="col-12" style="min-height:500px">
                     <div class="col-h2">
 
-                        <h2>{{configScene.FIELD_SURVEY_NUMBER}}-重建</h2>
+                        <h2>{{configScene.SCENE_ID}}-重建</h2>
                     </div>
                     <div class="row">
                         <div class="input-group col-md-6">
@@ -141,6 +151,14 @@
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
+                                <span class="input-group-text">缩放比例</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="scale"
+                                   aria-describedby="basic-addon3"
+                                   v-model="configScene.scale">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
                                 <span class="input-group-text">场景路径</span>
                             </div>
                             <input type="text" disabled class="form-control" id="scene_path"
@@ -148,14 +166,12 @@
                                    v-model="configScene.scene_path">
                         </div>
 
-                        <div class="input-btn col-md-12" style="display: flex;justify-content: center;padding: 10px;">
-                            <button type="button" @click="baseEditClick" class="btn btn-warning"
-                                    style="margin-right: 30px;color: #fff;background-color: #ec8b0b;width: 152px;height: 51px;">
-                                编辑
+                        <div class="input-btn col-md-12" style="display: flex;justify-content: center;
+              padding: 10px;">
+                            <button type="button col-md-5" @click="btnClick" class="btnmy"
+                                    style="margin-right: 30px;">编辑
                             </button>
-                            <button type="button" @click="baseSaveClick" class="btn btn-primary"
-                                    style="background-color: #2196f3;width: 152px;height: 51px;">保存
-                            </button>
+                            <button type="button col-md-7" @click="btn2Click" class="btnmy">保存</button>
                         </div>
 
                     </div>
@@ -178,16 +194,27 @@
             caseType: {},
             fieldCommander: {},
             taskSource: {},
-            inquestEnclosure: [],
-            downUrl: base_ip + "/wuzhengB/down?tableName=INQUEST_ENCLOSURE&tableIdName=INQUEST_ENCLOSURE_ID&tableFileName=INQUEST_ENCLOSURE_NAME&tableFileContent=INQUEST_ENCLOSURE_CONTENT"
+            inquestEnclosure: []
         },
         mounted() {
             this.init();
         },
+        watch: {
+            // 进行深度监听
+            markGoods: {
+                deep: true,
+                //使用handler来处理变化
+                handler(newVal) {
+                    //这个newVal就是监听的对象更新后的值
+                    console.log("我变化了", newVal);
+                    this.markGoods = newVal
+                }
+            }
+        },
         methods: {
             init() {
                 // 获取指定参数值
-                this.sceneId = this.getUrlParam('scene_id');
+                this.sceneId = this.getUrlParam('sceneId');
                 if (this.sceneId == "") {
                     this.alertMessage = "参数错误";
                     $(".modal-button").click();
@@ -197,18 +224,7 @@
                     }
                     axios.post(base_ip + "/wuzheng/select/configScene", params).then((response) => {
                         if (response.data.code == '200') {
-                            this.scene_id = response.data.data.scene_id == null ? {} : response.data.data.scene_id;
-                            this.case_id = response.data.data.case_id == null ? {} : response.data.data.case_id;
-                            this.start_lon = response.data.data.start_lon == null ? {} : response.data.data.start_lon;
-                            this.start_lat = response.data.data.start_lat == null ? {} : response.data.data.start_lat;
-                            this.start_height = response.data.data.start_height == null ? {} : response.data.data.start_height;
-                            this.end_lon = response.data.data.end_lon == null ? {} : response.data.data.end_lon;
-                            this.end_lat = response.data.data.end_lat == null ? {} : response.data.data.end_lat;
-                            this.end_height = response.data.data.end_height == null ? {} : response.data.data.end_height;
-                            this.angle_lon = response.data.data.angle_lon == null ? {} : response.data.data.angle_lon;
-                            this.angle_lat = response.data.data.angle_lat == null ? {} : response.data.data.angle_lat;
-                            this.angle_height = response.data.data.angle_height == null ? {} : response.data.data.angle_height;
-                            this.scene_path = response.data.data.scene_path == null ? {} : response.data.data.scene_path;
+                            this.configScene = response.data.data;
                         } else {
                             this.alertMessage = response.data.code.message;
                             $(".modal-button").click();
@@ -229,14 +245,16 @@
                 }
                 return "";
             },
-
+            btnClick() {
+                $('.input-group input').attr('disabled', false)
+            },
             baseEditClick() {
                 $('.input-group input').attr('disabled', false)
             },
-            baseSaveClick() {
-                this.inquestBaseInfo.tableName = "INQUEST_BASE_INFO";
-                this.inquestBaseInfo.tableId = "BASE_INFO_ID";
-                axios.post(base_ip + "/wuzhengB/update", this.inquestBaseInfo).then((response) => {
+            btn2Click() {
+                this.configScene.tableName = "scene_t";
+                this.configScene.tableId = "scene_id";
+                axios.post(base_ip + "/wuzhengB/update", this.configScene).then((response) => {
                     if (response.data.code == '200') {
 
                     } else {
@@ -244,26 +262,7 @@
                         $(".modal-button").click();
                     }
                 })
-                this.fieldCommander.tableName = "FIELD_COMMANDER";
-                this.fieldCommander.tableId = "FIELD_COMMANDER_ID";
-                axios.post(base_ip + "/wuzhengB/update", this.fieldCommander).then((response) => {
-                    if (response.data.code == '200') {
 
-                    } else {
-                        this.alertMessage = response.data.code.message;
-                        $(".modal-button").click();
-                    }
-                })
-                this.siteChanges.tableName = "SITE_CHANGES";
-                this.siteChanges.tableId = "SITE_CHANGES_ID";
-                axios.post(base_ip + "/wuzhengB/update", this.siteChanges).then((response) => {
-                    if (response.data.code == '200') {
-
-                    } else {
-                        this.alertMessage = response.data.code.message;
-                        $(".modal-button").click();
-                    }
-                })
                 $('.input-group input').attr('disabled', true)
             }
         }
