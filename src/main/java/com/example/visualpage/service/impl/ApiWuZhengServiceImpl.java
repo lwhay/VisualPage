@@ -36,6 +36,13 @@ public class ApiWuZhengServiceImpl implements ApiWuZhengService {
     }
 
     @Override
+    public Map<String, Object> selectConfigScene(String sceneId) throws ParseException {
+        String sqlScene = "select * from scene_t where SCENE_ID=?";
+        Map<String, Object> mapscene = secondQueryForMap(sqlScene, sceneId);
+        return mapscene;
+    }
+
+    @Override
     public Map<String, Object> selectInquestBaseInfo(String baseInfoId) throws ParseException {
         String sqlInquestBaseInfo = "select * from inquest_base_info where BASE_INFO_ID=?";
         String sqlCaseType = "select * from CASE_TYPE where CASE_TYPE_ID=?";

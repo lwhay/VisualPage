@@ -13,4 +13,5 @@ public interface ApiWuZhengService {
 
     Map<String,Object>  selectScoutRoomDetail(String scoutAttaId) throws ParseException;
     Map<String,Object>  selectMediumDetail(String mediumId) throws ParseException;
+    Map<String,Object>  selectConfigScene(String sceneId) throws ParseException;
 }

@@ -49,173 +49,103 @@
                 <div class="col-12" style="min-height:500px">
                     <div class="col-h2">
 
-                        <h2>{{inquestBaseInfo.FIELD_SURVEY_NUMBER}}-重建</h2>
+                        <h2>{{configScene.FIELD_SURVEY_NUMBER}}-重建</h2>
                     </div>
                     <div class="row">
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">现场勘验号</span>
+                                <span class="input-group-text">案件ID</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="FIELD_SURVEY_NUMBER"
-                                   aria-describedby="basic-addon3" v-model="inquestBaseInfo.FIELD_SURVEY_NUMBER">
+                            <input type="text" disabled class="form-control" id="case_id"
+                                   aria-describedby="basic-addon3" v-model="configScene.case_id">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">案事件名称</span>
+                                <span class="input-group-text">场景ID</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="CASE_EVENT_NAME"
+                            <input type="text" disabled class="form-control" id="scene_id"
                                    aria-describedby="basic-addon3"
-                                   v-model="inquestBaseInfo.CASE_EVENT_NAME">
+                                   v-model="configScene.scene_id">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">案事件编号</span>
+                                <span class="input-group-text">起始经度</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="CASE_EVENT_CODE"
+                            <input type="text" disabled class="form-control" id="start_lon"
                                    aria-describedby="basic-addon3"
-                                   v-model="inquestBaseInfo.CASE_EVENT_CODE">
+                                   v-model="configScene.start_lon">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">报案时间</span>
+                                <span class="input-group-text">结束经度</span>
                             </div>
-                            <el-date-picker v-model="inquestBaseInfo.REPORT_DATE" id="REPORT_DATE" type="datetime"
-                                            placeholder="选择日期时间">
-                            </el-date-picker>
-                        </div>
-                        <div class="input-group col-md-6">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">发案地点</span>
-                            </div>
-                            <input type="text" disabled class="form-control" id="HAPPENING_PLACE"
+                            <input type="text" disabled class="form-control" id="end_lon"
                                    aria-describedby="basic-addon3"
-                                   v-model="inquestBaseInfo.HAPPENING_PLACE">
+                                   v-model="configScene.end_lon">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">勘验开始时间</span>
+                                <span class="input-group-text">起始纬度</span>
                             </div>
-                            <el-date-picker v-model="inquestBaseInfo.INQUEST_START_TIME" id="INQUEST_START_TIME"
-                                            type="datetime"
-                                            placeholder="选择日期时间">
-                            </el-date-picker>
-                        </div>
-                        <div class="input-group col-md-6">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">勘验结束时间</span>
-                            </div>
-                            <el-date-picker v-model="inquestBaseInfo.INQUEST_END_TIME" id="INQUEST_END_TIME"
-                                            type="datetime"
-                                            placeholder="选择日期时间">
-                            </el-date-picker>
-                        </div>
-                        <div class="input-group col-md-6">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">现场勘验人员</span>
-                            </div>
-                            <input type="text" disabled class="form-control" id="FIELD_SURVEY_PERSON"
-                                   aria-describedby="basic-addon3" v-model="inquestBaseInfo.FIELD_SURVEY_PERSON">
-                        </div>
-                        <div class="input-group col-md-6">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">主勘联系电话</span>
-                            </div>
-                            <input type="text" disabled class="form-control" id="FIELD_SURVEY_TEL"
+                            <input type="text" disabled class="form-control" id="start_lat"
                                    aria-describedby="basic-addon3"
-                                   v-model="inquestBaseInfo.FIELD_SURVEY_TEL">
+                                   v-model="configScene.start_lat">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">是否中心现场</span>
+                                <span class="input-group-text">结束纬度</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="IS_SITE_CENTER"
+                            <input type="text" disabled class="form-control" id="end_lat"
                                    aria-describedby="basic-addon3"
-                                   v-model="inquestBaseInfo.IS_SITE_CENTER">
+                                   v-model="configScene.end_lat">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">现场损失情况</span>
+                                <span class="input-group-text">起始高程</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="SITE_LOSS"
+                            <input type="text" disabled class="form-control" id="start_height"
                                    aria-describedby="basic-addon3"
-                                   v-model="inquestBaseInfo.SITE_LOSS">
+                                   v-model="configScene.start_height">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">补充说明</span>
+                                <span class="input-group-text">结束高程</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="REMARK" aria-describedby="basic-addon3"
-                                   v-model="inquestBaseInfo.REMARK">
-                        </div>
-                        <div class="input-group col-md-6">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">保护措施</span>
-                            </div>
-                            <input type="text" disabled class="form-control" id="PROTECTIVE_MEASURES"
-                                   aria-describedby="basic-addon3" v-model="inquestBaseInfo.PROTECTIVE_MEASURES">
-                        </div>
-                        <div class="input-group col-md-6">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">天气情况</span>
-                            </div>
-                            <input type="text" disabled class="form-control" id="WEATHER_CONDITION"
+                            <input type="text" disabled class="form-control" id="end_height"
                                    aria-describedby="basic-addon3"
-                                   v-model="inquestBaseInfo.WEATHER_CONDITION">
+                                   v-model="configScene.end_height">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">经度</span>
+                                <span class="input-group-text">水平旋转</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="LONGITUDE"
+                            <input type="text" disabled class="form-control" id="angle_lon"
                                    aria-describedby="basic-addon3"
-                                   v-model="inquestBaseInfo.LONGITUDE">
+                                   v-model="configScene.angle_lon">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">纬度</span>
+                                <span class="input-group-text">垂直旋转</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="LATITUDE"
+                            <input type="text" disabled class="form-control" id="angle_lat"
                                    aria-describedby="basic-addon3"
-                                   v-model="inquestBaseInfo.LATITUDE">
+                                   v-model="configScene.angle_lat">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">勘验编码</span>
+                                <span class="input-group-text">径向旋转</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="INQUEST_CODE"
+                            <input type="text" disabled class="form-control" id="angle_height"
                                    aria-describedby="basic-addon3"
-                                   v-model="inquestBaseInfo.INQUEST_CODE">
+                                   v-model="configScene.angle_height">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">案件类型名称</span>
+                                <span class="input-group-text">场景路径</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="CASE_TYPE_NAME"
+                            <input type="text" disabled class="form-control" id="scene_path"
                                    aria-describedby="basic-addon3"
-                                   v-model="caseType.CASE_TYPE_NAME">
-                        </div>
-                        <div class="input-group col-md-6">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">任务来源名称</span>
-                            </div>
-                            <input type="text" disabled class="form-control" id="TASK_SOURCE_NAME"
-                                   aria-describedby="basic-addon3"
-                                   v-model="taskSource.TASK_SOURCE_NAME">
-                        </div>
-                        <div class="input-group col-md-6">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">现场指挥人员名称</span>
-                            </div>
-                            <input type="text" disabled class="form-control" id="FIELD_COMMANDER_NAME"
-                                   aria-describedby="basic-addon3" v-model="fieldCommander.FIELD_COMMANDER_NAME">
-                        </div>
-                        <div class="input-group col-md-6">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">现场变动情况名称</span>
-                            </div>
-                            <input type="text" disabled class="form-control" id="SITE_CHANGES_NAME"
-                                   aria-describedby="basic-addon3"
-                                   v-model="siteChanges.SITE_CHANGES_NAME">
+                                   v-model="configScene.scene_path">
                         </div>
 
                         <div class="input-btn col-md-12" style="display: flex;justify-content: center;padding: 10px;">
@@ -231,11 +161,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row" style="padding: 15px 28px;">
-                <span style="margin-right: 20px;">附件：</span>
-                <a target="_blank" v-for="ige in inquestEnclosure" :href="downUrl+'&FILEID='+ige.FILEID"
-                   style="margin-right: 25px;">{{ige.FILENAME}}</a>
-            </div>
         </div>
     </div>
 </div>
@@ -246,7 +171,8 @@
         el: '#vue_index',
         data: {
             alertMessage: "1",
-            baseInfoId: "",
+            sceneId: "",
+            configScene: {},
             inquestBaseInfo: {},
             siteChanges: {},
             caseType: {},
@@ -261,22 +187,28 @@
         methods: {
             init() {
                 // 获取指定参数值
-                this.baseInfoId = this.getUrlParam('baseInfoId');
-                if (this.baseInfoId == "") {
+                this.sceneId = this.getUrlParam('scene_id');
+                if (this.sceneId == "") {
                     this.alertMessage = "参数错误";
                     $(".modal-button").click();
                 } else {
                     let params = {
-                        baseInfoId: this.baseInfoId
+                        sceneId: this.sceneId
                     }
-                    axios.post(base_ip + "/wuzheng/select/inquestBaseInfo", params).then((response) => {
+                    axios.post(base_ip + "/wuzheng/select/configScene", params).then((response) => {
                         if (response.data.code == '200') {
-                            this.inquestBaseInfo = response.data.data.inquestBaseInfo == null ? {} : response.data.data.inquestBaseInfo;
-                            this.taskSource = response.data.data.taskSource == null ? {} : response.data.data.taskSource;
-                            this.siteChanges = response.data.data.siteChanges == null ? {} : response.data.data.siteChanges;
-                            this.fieldCommander = response.data.data.fieldCommander == null ? {} : response.data.data.fieldCommander;
-                            this.caseType = response.data.data.caseType == null ? {} : response.data.data.caseType;
-                            this.inquestEnclosure = response.data.data.inquestEnclosure;
+                            this.scene_id = response.data.data.scene_id == null ? {} : response.data.data.scene_id;
+                            this.case_id = response.data.data.case_id == null ? {} : response.data.data.case_id;
+                            this.start_lon = response.data.data.start_lon == null ? {} : response.data.data.start_lon;
+                            this.start_lat = response.data.data.start_lat == null ? {} : response.data.data.start_lat;
+                            this.start_height = response.data.data.start_height == null ? {} : response.data.data.start_height;
+                            this.end_lon = response.data.data.end_lon == null ? {} : response.data.data.end_lon;
+                            this.end_lat = response.data.data.end_lat == null ? {} : response.data.data.end_lat;
+                            this.end_height = response.data.data.end_height == null ? {} : response.data.data.end_height;
+                            this.angle_lon = response.data.data.angle_lon == null ? {} : response.data.data.angle_lon;
+                            this.angle_lat = response.data.data.angle_lat == null ? {} : response.data.data.angle_lat;
+                            this.angle_height = response.data.data.angle_height == null ? {} : response.data.data.angle_height;
+                            this.scene_path = response.data.data.scene_path == null ? {} : response.data.data.scene_path;
                         } else {
                             this.alertMessage = response.data.code.message;
                             $(".modal-button").click();

@@ -25,7 +25,7 @@ public class ApiWuZhengController {
     @RequestMapping(value = "/select/configScene")
     public ResultVo selectConfigScene(@RequestBody Map<String, String> map) {
         try {
-            Map<String, Object> resultMap = apiWuZhengService.selectInquestBaseInfo(map.get("sceneId"));
+            Map<String, Object> resultMap = apiWuZhengService.selectConfigScene(map.get("sceneId"));
             return ResultVoUtil.success(resultMap);
         } catch (Exception e) {
             e.printStackTrace();
