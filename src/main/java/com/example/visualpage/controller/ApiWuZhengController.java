@@ -22,6 +22,22 @@ public class ApiWuZhengController {
      * @param map
      * @return
      */
+    @RequestMapping(value = "/select/configScene")
+    public ResultVo selectConfigScene(@RequestBody Map<String, String> map) {
+        try {
+            Map<String, Object> resultMap = apiWuZhengService.selectInquestBaseInfo(map.get("sceneId"));
+            return ResultVoUtil.success(resultMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.serviceErr();
+        }
+    }
+
+    /**
+     *查询勘验基础信息
+     * @param map
+     * @return
+     */
     @RequestMapping(value = "/select/inquestBaseInfo")
     public ResultVo selectInquestBaseInfo(@RequestBody Map<String,String> map){
         try {

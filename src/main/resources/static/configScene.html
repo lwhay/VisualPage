@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>现场详情</title>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="bootstrap4.5.0/js/bootstrap.min.js"></script>
+    <script src="bootstrap4.5.0/js/popper.min.js"></script>
+    <link rel="stylesheet" href="bootstrap4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+
+<body>
+<div id="vue_index">
+    <!-- M模态框 -->
+    <button type="button" class="btn btn-primary modal-button" data-toggle="modal" data-target="#exampleModal"
+            style="display: none">
+        触发模态框按钮
+    </button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">提 示</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{alertMessage}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="main_content">
+        <div class="container">
+            <div class="row">
+                <div class="col-12" style="min-height:500px">
+                    <div class="col-h2">
+
+                        <h2>{{inquestBaseInfo.FIELD_SURVEY_NUMBER}}-重建</h2>
+                    </div>
+                    <div class="row">
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">现场勘验号</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="FIELD_SURVEY_NUMBER"
+                                   aria-describedby="basic-addon3" v-model="inquestBaseInfo.FIELD_SURVEY_NUMBER">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">案事件名称</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="CASE_EVENT_NAME"
+                                   aria-describedby="basic-addon3"
+                                   v-model="inquestBaseInfo.CASE_EVENT_NAME">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">案事件编号</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="CASE_EVENT_CODE"
+                                   aria-describedby="basic-addon3"
+                                   v-model="inquestBaseInfo.CASE_EVENT_CODE">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">报案时间</span>
+                            </div>
+                            <el-date-picker v-model="inquestBaseInfo.REPORT_DATE" id="REPORT_DATE" type="datetime"
+                                            placeholder="选择日期时间">
+                            </el-date-picker>
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">发案地点</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="HAPPENING_PLACE"
+                                   aria-describedby="basic-addon3"
+                                   v-model="inquestBaseInfo.HAPPENING_PLACE">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">勘验开始时间</span>
+                            </div>
+                            <el-date-picker v-model="inquestBaseInfo.INQUEST_START_TIME" id="INQUEST_START_TIME"
+                                            type="datetime"
+                                            placeholder="选择日期时间">
+                            </el-date-picker>
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">勘验结束时间</span>
+                            </div>
+                            <el-date-picker v-model="inquestBaseInfo.INQUEST_END_TIME" id="INQUEST_END_TIME"
+                                            type="datetime"
+                                            placeholder="选择日期时间">
+                            </el-date-picker>
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">现场勘验人员</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="FIELD_SURVEY_PERSON"
+                                   aria-describedby="basic-addon3" v-model="inquestBaseInfo.FIELD_SURVEY_PERSON">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">主勘联系电话</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="FIELD_SURVEY_TEL"
+                                   aria-describedby="basic-addon3"
+                                   v-model="inquestBaseInfo.FIELD_SURVEY_TEL">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">是否中心现场</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="IS_SITE_CENTER"
+                                   aria-describedby="basic-addon3"
+                                   v-model="inquestBaseInfo.IS_SITE_CENTER">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">现场损失情况</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="SITE_LOSS"
+                                   aria-describedby="basic-addon3"
+                                   v-model="inquestBaseInfo.SITE_LOSS">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">补充说明</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="REMARK" aria-describedby="basic-addon3"
+                                   v-model="inquestBaseInfo.REMARK">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">保护措施</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="PROTECTIVE_MEASURES"
+                                   aria-describedby="basic-addon3" v-model="inquestBaseInfo.PROTECTIVE_MEASURES">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">天气情况</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="WEATHER_CONDITION"
+                                   aria-describedby="basic-addon3"
+                                   v-model="inquestBaseInfo.WEATHER_CONDITION">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">经度</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="LONGITUDE"
+                                   aria-describedby="basic-addon3"
+                                   v-model="inquestBaseInfo.LONGITUDE">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">纬度</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="LATITUDE"
+                                   aria-describedby="basic-addon3"
+                                   v-model="inquestBaseInfo.LATITUDE">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">勘验编码</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="INQUEST_CODE"
+                                   aria-describedby="basic-addon3"
+                                   v-model="inquestBaseInfo.INQUEST_CODE">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">案件类型名称</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="CASE_TYPE_NAME"
+                                   aria-describedby="basic-addon3"
+                                   v-model="caseType.CASE_TYPE_NAME">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">任务来源名称</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="TASK_SOURCE_NAME"
+                                   aria-describedby="basic-addon3"
+                                   v-model="taskSource.TASK_SOURCE_NAME">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">现场指挥人员名称</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="FIELD_COMMANDER_NAME"
+                                   aria-describedby="basic-addon3" v-model="fieldCommander.FIELD_COMMANDER_NAME">
+                        </div>
+                        <div class="input-group col-md-6">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">现场变动情况名称</span>
+                            </div>
+                            <input type="text" disabled class="form-control" id="SITE_CHANGES_NAME"
+                                   aria-describedby="basic-addon3"
+                                   v-model="siteChanges.SITE_CHANGES_NAME">
+                        </div>
+
+                        <div class="input-btn col-md-12" style="display: flex;justify-content: center;padding: 10px;">
+                            <button type="button" @click="baseEditClick" class="btn btn-warning"
+                                    style="margin-right: 30px;color: #fff;background-color: #ec8b0b;width: 152px;height: 51px;">
+                                编辑
+                            </button>
+                            <button type="button" @click="baseSaveClick" class="btn btn-primary"
+                                    style="background-color: #2196f3;width: 152px;height: 51px;">保存
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding: 15px 28px;">
+                <span style="margin-right: 20px;">附件：</span>
+                <a target="_blank" v-for="ige in inquestEnclosure" :href="downUrl+'&FILEID='+ige.FILEID"
+                   style="margin-right: 25px;">{{ige.FILENAME}}</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="config/config.js"></script>
+<script>
+    var vm = new Vue({
+        el: '#vue_index',
+        data: {
+            alertMessage: "1",
+            baseInfoId: "",
+            inquestBaseInfo: {},
+            siteChanges: {},
+            caseType: {},
+            fieldCommander: {},
+            taskSource: {},
+            inquestEnclosure: [],
+            downUrl: base_ip + "/wuzhengB/down?tableName=INQUEST_ENCLOSURE&tableIdName=INQUEST_ENCLOSURE_ID&tableFileName=INQUEST_ENCLOSURE_NAME&tableFileContent=INQUEST_ENCLOSURE_CONTENT"
+        },
+        mounted() {
+            this.init();
+        },
+        methods: {
+            init() {
+                // 获取指定参数值
+                this.baseInfoId = this.getUrlParam('baseInfoId');
+                if (this.baseInfoId == "") {
+                    this.alertMessage = "参数错误";
+                    $(".modal-button").click();
+                } else {
+                    let params = {
+                        baseInfoId: this.baseInfoId
+                    }
+                    axios.post(base_ip + "/wuzheng/select/inquestBaseInfo", params).then((response) => {
+                        if (response.data.code == '200') {
+                            this.inquestBaseInfo = response.data.data.inquestBaseInfo == null ? {} : response.data.data.inquestBaseInfo;
+                            this.taskSource = response.data.data.taskSource == null ? {} : response.data.data.taskSource;
+                            this.siteChanges = response.data.data.siteChanges == null ? {} : response.data.data.siteChanges;
+                            this.fieldCommander = response.data.data.fieldCommander == null ? {} : response.data.data.fieldCommander;
+                            this.caseType = response.data.data.caseType == null ? {} : response.data.data.caseType;
+                            this.inquestEnclosure = response.data.data.inquestEnclosure;
+                        } else {
+                            this.alertMessage = response.data.code.message;
+                            $(".modal-button").click();
+                        }
+                    })
+                }
+            },
+            getUrlParam(name) {
+                // 取得url中?后面的字符
+                var query = window.location.search.substring(1);
+                // 把参数按&拆分成数组
+                var param_arr = query.split("&");
+                for (var i = 0; i < param_arr.length; i++) {
+                    var pair = param_arr[i].split("=");
+                    if (pair[0] == name) {
+                        return pair[1];
+                    }
+                }
+                return "";
+            },
+
+            baseEditClick() {
+                $('.input-group input').attr('disabled', false)
+            },
+            baseSaveClick() {
+                this.inquestBaseInfo.tableName = "INQUEST_BASE_INFO";
+                this.inquestBaseInfo.tableId = "BASE_INFO_ID";
+                axios.post(base_ip + "/wuzhengB/update", this.inquestBaseInfo).then((response) => {
+                    if (response.data.code == '200') {
+
+                    } else {
+                        this.alertMessage = response.data.code.message;
+                        $(".modal-button").click();
+                    }
+                })
+                this.fieldCommander.tableName = "FIELD_COMMANDER";
+                this.fieldCommander.tableId = "FIELD_COMMANDER_ID";
+                axios.post(base_ip + "/wuzhengB/update", this.fieldCommander).then((response) => {
+                    if (response.data.code == '200') {
+
+                    } else {
+                        this.alertMessage = response.data.code.message;
+                        $(".modal-button").click();
+                    }
+                })
+                this.siteChanges.tableName = "SITE_CHANGES";
+                this.siteChanges.tableId = "SITE_CHANGES_ID";
+                axios.post(base_ip + "/wuzhengB/update", this.siteChanges).then((response) => {
+                    if (response.data.code == '200') {
+
+                    } else {
+                        this.alertMessage = response.data.code.message;
+                        $(".modal-button").click();
+                    }
+                })
+                $('.input-group input').attr('disabled', true)
+            }
+        }
+    })
+
+</script>
+</body>
+</html>
