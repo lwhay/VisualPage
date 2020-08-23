@@ -57,29 +57,29 @@
             <div class="row">
                 <div class="col-12" style="min-height:400px;">
                     <!--操作-->
-                    <h2>{{markGoods.MARK_GOODS_NAME}}-动力学要素集</h2>
+                    <h2>{{kineticSet.KSETNAME}}-动力学要素集</h2>
                     <div class="row">
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">集合种类</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="MARK_GOODS_NAME"
+                            <input type="text" disabled class="form-control" id="MODEL_CATEGORY"
                                    aria-describedby="basic-addon3"
-                                   v-model="markGoods.MARK_GOODS_NAME">
+                                   v-model="kineticSet.MODEL_CATEGORY">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">集合名称</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="EXTRACT_PERSON"
+                            <input type="text" disabled class="form-control" id="KSETNAME"
                                    aria-describedby="basic-addon3"
-                                   v-model="markGoods.EXTRACT_PERSON">
+                                   v-model="kineticSet.KSETNAME">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">创建时间</span>
                             </div>
-                            <el-date-picker v-model="markGoods.EXTRACT_TIME" id="EXTRACT_TIME" type="datetime"
+                            <el-date-picker v-model="kineticSet.CREATE_TIME" id="CREATE_TIME" type="datetime"
                                             format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
                                             placeholder="选择日期时间">
                             </el-date-picker>
@@ -88,7 +88,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">修改时间</span>
                             </div>
-                            <el-date-picker v-model="markGoods.CREATE_TIME" id="CREATE_TIME" type="datetime"
+                            <el-date-picker v-model="kineticSet.UPDATE_TIME" id="UPDATE_TIME" type="datetime"
                                             format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
                                             placeholder="选择日期时间">
                             </el-date-picker>
@@ -97,17 +97,17 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text">集合路径</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="TEST_STATE"
+                            <input type="text" disabled class="form-control" id="ROOT_PATH"
                                    aria-describedby="basic-addon3"
-                                   v-model="markGoods.TEST_STATE">
+                                   v-model="kineticSet.ROOT_PATH">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">批注信息</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="DATA_SOURCES"
+                            <input type="text" disabled class="form-control" id="COMMENTS"
                                    aria-describedby="basic-addon3"
-                                   v-model="markGoods.DATA_SOURCES">
+                                   v-model="kineticSet.COMMENTS">
                         </div>
                         <div class="input-btn col-md-12" style="display: flex;justify-content: center;
               padding: 10px;">
@@ -129,16 +129,15 @@
         el: '#vue_index',
         data: {
             alertMessage: "",
-            markGoodsId: "",
-            extractMethod: {},
-            goodsType: {},
-            markGoods: {},
-            kineticSet: {},
-            sampleMaterial: {},
-            fullPhoto: [],
-            positionPhoto: [],
-            markGoodsTestInfo: [],
-            involvedPersonInfo: {},
+            MODEL_CATEGORY: "",
+            kineticSet: {
+                MODEL_CATEGORY: "",
+                KSETNAME: "",
+                CREATE_TIME: "",
+                UPDATE_TIME: "",
+                ROOT_PATH: "",
+                COMMENTS: ""
+            },
             count: 0
         },
         mounted() {
@@ -160,22 +159,25 @@
         methods: {
             init() {
                 // 获取指定参数值
-                this.markGoodsId = '2c91facc6ece8724016ece88153b0004';//this.getUrlParam('KSETID');
-                axios.post(base_ip + "/wuzhengB/select/createKineticModel", params).then((response) => {
-                    console.log(response.data.data)
-                    if (response.data.code == '200') {
-                        this.extractMethod = response.data.data.extractMethod == null ? {} : response.data.data.extractMethod;
-                        this.goodsType = response.data.data.goodsType == null ? {} : response.data.data.goodsType;
-                        this.markGoods = response.data.data.markGoods == null ? {} : response.data.data.markGoods;
-                        this.sampleMaterial = response.data.data.sampleMaterial == null ? {} : response.data.data.sampleMaterial;
-                        this.fullPhoto = response.data.data.fullPhoto;
-                        this.positionPhoto = response.data.data.positionPhoto;
-                        this.markGoodsTestInfo = response.data.data.markGoodsTestInfo;
-                    } else {
-                        this.alertMessage = response.data.code.message;
-                        $(".modal-button").click();
-                    }
-                })
+                this.KSETID = this.getUrlParam('KSETID');
+                if (this.KSETID != "") {
+                    let params = {
+                        KSETID: this.KSETID
+                    };
+                    axios.post(base_ip + "/wuzhengB/select/KineticModel", params).then((response) => {
+                        console.log(response.data.data)
+                        if (response.data.code == '200') {
+                            this.kineticSet = response.data.data;
+                        } else {
+                            this.alertMessage = response.data.code.message;
+                            $(".modal-button").click();
+                        }
+                    })
+                } else {
+                    if (this.getUrlParam('MODEL_CATEGORY') != "")
+                        this.MODEL_CATEGORY = this.getUrlParam('MODEL_CATEGORY');
+                    this.kineticSet.MODEL_CATEGORY = this.MODEL_CATEGORY;
+                }
             },
             getUrlParam(name) {
                 // 取得url中?后面的字符
@@ -185,7 +187,7 @@
                 for (var i = 0; i < param_arr.length; i++) {
                     var pair = param_arr[i].split("=");
                     if (pair[0] == name) {
-                        return pair[1];
+                        return decodeURI(pair[1]);
                     }
                 }
                 return "";
@@ -203,8 +205,8 @@
             },
             btn2Click() {
                 this.kineticSet.tableName = "KINETIC_SET";
-                this.kineticSet.tableId = "MARK_GOODS_ID";
-                axios.post(base_ip + "/wuzhengB/insertKineticSet", this.kineticSet).then((response) => {
+                this.kineticSet.tableId = "KSETID";
+                axios.post(base_ip + "/wuzhengB/insert", this.kineticSet).then((response) => {
                     if (response.data.code == '200') {
 
                     } else {
@@ -213,42 +215,6 @@
                     }
                 })
                 $('.input-group input').attr('disabled', true)
-            },
-            td_btnClick(mgti, e) {
-                console.log(mgti);
-                let that = $(this)
-                if (e.target.innerText == '编辑') {
-                    $('table td button').text('保存')
-                    $('table td button').attr('class', 'btnmy')
-                    $('table tr input').attr('disabled', false)
-                } else {
-                    $('table td button').text('编辑')
-                    $('table td button').attr('class', 'btnmy')
-                    $('table tr input').attr('disabled', true)
-                    let param = {
-                        INSPECTION_NUMBER: mgti.INSPECTION_NUMBER,
-                        APPRAISAL_CONCLUSION: mgti.APPRAISAL_CONCLUSION,
-                        MARK_GOODS_TEST_INFO_ID: mgti.MARK_GOODS_TEST_INFO_ID,
-                        tableName: "MARK_GOODS_TEST_INFO",
-                        tableId: "MARK_GOODS_TEST_INFO_ID"
-                    }
-                    axios.post(base_ip + "/wuzhengB/update", param).then((response) => {
-                        if (response.data.code == '200') {
-
-                        } else {
-                            this.alertMessage = response.data.code.message;
-                            $(".modal-button").click();
-                        }
-                    })
-
-
-                }
-                $(this).parent().siblings("td").each(function () {  // 获取当前行的其他单元格
-                    var obj_text = $(this).find("input:text");    // 判断单元格下是否有文本框
-                    if (!obj_text.length) {
-
-                    }  // 如果没有文本框，则添加文本框使之可以编辑
-                });
             },
             modelBtnClick() {
                 $('.modal-body input').attr('disabled', false)

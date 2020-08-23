@@ -42,6 +42,12 @@ public class ApiWuZhengServiceImpl implements ApiWuZhengService {
         return mapscene;
     }
 
+    @Override public Map<String, Object> selectKineticModel(Integer KSETID) throws ParseException {
+        String sqlKinetSet = "select * from scene_t where KSETID=?";
+        Map<String, Object> mapkineticset = secondQueryForMap(sqlKinetSet, KSETID);
+        return mapkineticset;
+    }
+
     @Override
     public Map<String, Object> selectInquestBaseInfo(String baseInfoId) throws ParseException {
         String sqlInquestBaseInfo = "select * from inquest_base_info where BASE_INFO_ID=?";

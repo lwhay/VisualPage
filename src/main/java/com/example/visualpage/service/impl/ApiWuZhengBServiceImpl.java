@@ -364,15 +364,22 @@ public class ApiWuZhengBServiceImpl implements ApiWuZhengBService {
     }
 
     @Override @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class,
-            RuntimeException.class }) public int insertKineticSet(Map<String, Object> map) {
+            RuntimeException.class }) public int insert(Map<String, Object> map) {
         Object[] objects = new Object[map.size()];
-        String sql = "insert into " + map.get("tableName") == null ? "" : map.get("tableName").toString() + "(";
+        String sql = "insert into ";
+        sql += map.get("tableName") == null ? "" : map.get("tableName").toString() + "(";
         String keypart = "";
         String valpart = "";
         for (Map.Entry<String, Object> e : map.entrySet()) {
+            if (e.getKey().equals("tableName") || e.getKey().equals("tableId"))
+                continue;
             keypart += e.getKey();
             keypart += ",";
-            valpart += e.getValue().toString();
+            if (e.getValue().getClass().equals(String.class)) {
+                valpart += "'";
+                valpart += e.getValue().toString();
+                valpart += "'";
+            }
             valpart += ",";
         }
         keypart = keypart.trim();

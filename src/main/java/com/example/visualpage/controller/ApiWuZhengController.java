@@ -18,7 +18,7 @@ public class ApiWuZhengController {
     private ApiWuZhengService apiWuZhengService;
 
     /**
-     *查询勘验基础信息
+     *查询重建场景信息
      * @param map
      * @return
      */
@@ -26,6 +26,23 @@ public class ApiWuZhengController {
     public ResultVo selectConfigScene(@RequestBody Map<String, String> map) {
         try {
             Map<String, Object> resultMap = apiWuZhengService.selectConfigScene(map.get("sceneId"));
+            return ResultVoUtil.success(resultMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultVoUtil.serviceErr();
+        }
+    }
+
+    /**
+     * 查询模型集合信息
+     *
+     * @param map
+     * @return
+     */
+    @RequestMapping(value = "/select/kineticModel") public ResultVo selectKineticModel(
+            @RequestBody Map<String, String> map) {
+        try {
+            Map<String, Object> resultMap = apiWuZhengService.selectKineticModel(Integer.parseInt(map.get("KSETID")));
             return ResultVoUtil.success(resultMap);
         } catch (Exception e) {
             e.printStackTrace();
