@@ -1,8 +1,8 @@
-<html lang="en">
+<!DOCTYPE html>
 
 <head>
     <meta charset="UTF-8">
-    <title>创建动力学模型</title>
+    <title>现场重建</title>
 
     <link rel="stylesheet" href="bootstrap4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="time/index.css">
@@ -52,78 +52,70 @@
             </div>
         </div>
     </div>
+
     <div id="main_content">
         <div class="container">
             <div class="row">
-                <div class="col-12" style="min-height:400px;">
-                    <!--操作-->
-                    <h2>{{kineticSet.KSETNAME}}-动力学要素集</h2>
+                <div class="col-12" style="min-height:500px">
+                    <div class="col-h2">
+                        <h2>{{modelConfig.KSETNAME}}-模型</h2>
+                    </div>
                     <div class="row">
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">集合种类</span>
+                                <span class="input-group-text">模型名称</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="MODEL_CATEGORY"
-                                   aria-describedby="basic-addon3"
-                                   v-model="kineticSet.MODEL_CATEGORY">
+                            <input type="text" disabled class="form-control" id="case_id"
+                                   aria-describedby="basic-addon3" v-model="modelConfig.KSETNAME">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">集合名称</span>
+                                <span class="input-group-text">所属分类</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="KSETNAME"
+                            <input type="text" disabled class="form-control" id="MODEL_CATEGORY"
                                    aria-describedby="basic-addon3"
-                                   v-model="kineticSet.KSETNAME">
+                                   v-model="modelConfig.MODEL_CATEGORY">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">创建时间</span>
                             </div>
-                            <el-date-picker v-model="kineticSet.CREATE_TIME" id="CREATE_TIME" type="datetime"
-                                            format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
-                                            placeholder="选择日期时间">
-                            </el-date-picker>
+                            <input type="text" disabled class="form-control" id="CREATE_TIME"
+                                   aria-describedby="basic-addon3"
+                                   v-model="modelConfig.CREATE_TIME">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">修改时间</span>
+                                <span class="input-group-text">更新时间</span>
                             </div>
-                            <el-date-picker v-model="kineticSet.UPDATE_TIME" id="UPDATE_TIME" type="datetime"
-                                            format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"
-                                            placeholder="选择日期时间">
-                            </el-date-picker>
+                            <input type="text" disabled class="form-control" id="UPDATE_TIME"
+                                   aria-describedby="basic-addon3"
+                                   v-model="modelConfig.UPDATE_TIME">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">集合路径</span>
+                                <span class="input-group-text">根路径</span>
                             </div>
                             <input type="text" disabled class="form-control" id="ROOT_PATH"
                                    aria-describedby="basic-addon3"
-                                   v-model="kineticSet.ROOT_PATH">
+                                   v-model="modelConfig.ROOT_PATH">
                         </div>
                         <div class="input-group col-md-6">
                             <div class="input-group-prepend">
-                                <span class="input-group-text">配置信息</span>
+                                <span class="input-group-text">备注信息</span>
                             </div>
-                            <input type="text" disabled class="form-control" id="CONFIG"
+                            <input type="text" disabled class="form-control" id="COMMNETS"
                                    aria-describedby="basic-addon3"
-                                   v-model="kineticSet.CONFIG">
-                        </div>
-                        <div class="input-group col-md-6">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">批注信息</span>
-                            </div>
-                            <input type="text" disabled class="form-control" id="COMMENTS"
-                                   aria-describedby="basic-addon3"
-                                   v-model="kineticSet.COMMENTS">
+                                   v-model="modelConfig.COMMENTS">
                         </div>
                         <div class="input-btn col-md-12" style="display: flex;justify-content: center;
               padding: 10px;">
                             <button type="button col-md-5" @click="btnClick" class="btnmy"
                                     style="margin-right: 30px;">编辑
                             </button>
-                            <button type="button col-md-7" @click="btn2Click" class="btnmy">提交</button>
+                            <button type="button col-md-7" @click="btn2Click" class="btnmy">保存</button>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -136,55 +128,44 @@
     var vm = new Vue({
         el: '#vue_index',
         data: {
-            alertMessage: "",
-            MODEL_CATEGORY: "",
-            kineticSet: {
-                MODEL_CATEGORY: "",
-                KSETNAME: "",
-                CREATE_TIME: "",
-                UPDATE_TIME: "",
-                ROOT_PATH: "",
-                COMMENTS: ""
-            },
-            count: 0
+            alertMessage: "1",
+            KSETID: "",
+            modelConfig: {}
         },
         mounted() {
             this.init();
-            console.log(this.kineticSet);
         },
         watch: {
             // 进行深度监听
-            kineticSet: {
+            model: {
                 deep: true,
                 //使用handler来处理变化
                 handler(newVal) {
                     //这个newVal就是监听的对象更新后的值
                     console.log("我变化了", newVal);
-                    this.kineticSet = newVal
+                    this.markGoods = newVal
                 }
             }
         },
         methods: {
             init() {
                 // 获取指定参数值
-                this.KSETID = this.getUrlParam('KSETID');
-                if (this.KSETID != "") {
+                this.sceneId = this.getUrlParam('sceneId');
+                if (this.sceneId == "") {
+                    this.alertMessage = "参数错误";
+                    $(".modal-button").click();
+                } else {
                     let params = {
-                        KSETID: this.KSETID
-                    };
-                    axios.post(base_ip + "/wuzheng/select/kineticModel", params).then((response) => {
-                        console.log(response.data.data)
+                        sceneId: this.sceneId
+                    }
+                    axios.post(base_ip + "/wuzheng/select/configScene", params).then((response) => {
                         if (response.data.code == '200') {
-                            this.kineticSet = response.data.data;
+                            this.configScene = response.data.data;
                         } else {
                             this.alertMessage = response.data.code.message;
                             $(".modal-button").click();
                         }
                     })
-                } else {
-                    if (this.getUrlParam('MODEL_CATEGORY') != "")
-                        this.MODEL_CATEGORY = this.getUrlParam('MODEL_CATEGORY');
-                    this.kineticSet.MODEL_CATEGORY = this.MODEL_CATEGORY;
                 }
             },
             getUrlParam(name) {
@@ -195,26 +176,21 @@
                 for (var i = 0; i < param_arr.length; i++) {
                     var pair = param_arr[i].split("=");
                     if (pair[0] == name) {
-                        return decodeURI(pair[1]);
+                        return pair[1];
                     }
                 }
                 return "";
             },
-            personDetail(ilp) {
-                this.involvedPersonInfo = ilp
-                $(".person-button").click()
-            },
-            showImg(base64str) {
-                $("#ShowImage_Form").find("#img_show").html("<image src='" + "data:image/png;base64," + base64str + "'/>");
-                $("#ShowImage_Form").modal();
-            },
             btnClick() {
                 $('.input-group input').attr('disabled', false)
             },
+            baseEditClick() {
+                $('.input-group input').attr('disabled', false)
+            },
             btn2Click() {
-                this.kineticSet.tableName = "KINETIC_SET";
-                this.kineticSet.tableId = "KSETID";
-                axios.post(base_ip + "/wuzhengB/insert", this.kineticSet).then((response) => {
+                this.configScene.tableName = "scene_t";
+                this.configScene.tableId = "scene_id";
+                axios.post(base_ip + "/wuzhengB/update", this.configScene).then((response) => {
                     if (response.data.code == '200') {
 
                     } else {
@@ -222,27 +198,12 @@
                         $(".modal-button").click();
                     }
                 })
+
                 $('.input-group input').attr('disabled', true)
-            },
-            modelBtnClick() {
-                $('.modal-body input').attr('disabled', false)
-            },
-            modelBtn2Click() {
-                this.involvedPersonInfo.tableName = "INVOLVED_PERSON_INFO";
-                this.involvedPersonInfo.tableId = "INVOLVED_PERSON_INFO_ID";
-                axios.post(base_ip + "/wuzhengB/update", this.involvedPersonInfo).then((response) => {
-                    if (response.data.code == '200') {
-
-                    } else {
-                        this.alertMessage = response.data.code.message;
-                        $(".modal-button").click();
-                    }
-                })
-                $('.modal-body input').attr('disabled', true)
             }
         }
     })
+
 </script>
 </body>
-
 </html>
