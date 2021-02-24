@@ -480,7 +480,7 @@
                 <button type="button col-md-7" @click="btn2Click" class="btnmy">保存</button>
               </div>
             </div>
-            <h4>{{markGoods.MARK_GOODS_NAME}}-全貌照片</h4>
+            <h4>{{markGoods.MARK_GOODS_NAME}}-照片</h4>
             <div class="row">
               <div v-for="fp in fullPhoto">
                 <img :src="'data:image/png;base64,'+fp.FULL_PHOTO_CONTENT" class="bigImg suoimg" alt="Responsive image"
@@ -488,7 +488,7 @@
                   onmouseout="this.style.cursor='default'" v-on:click="showImg(fp.FULL_PHOTO_CONTENT)">
               </div>
             </div>
-            <h4>{{markGoods.MARK_GOODS_NAME}}-方位照片</h4>
+           <!-- <h4>{{markGoods.MARK_GOODS_NAME}}-方位照片</h4>
             <div class="row">
               <div v-for="pp in positionPhoto">
                 <img :src="'data:image/png;base64,'+pp.POSITION_PHOTO_CONTENT"
@@ -496,7 +496,7 @@
                   onmouseover="this.style.cursor='pointer';this.style.cursor='hand'"
                   onmouseout="this.style.cursor='default'">
               </div>
-            </div>
+            </div>-->
             <h4>{{markGoods.MARK_GOODS_NAME}}-痕迹物品检验信息</h4>
             <div class="row">
               <!-- table-hover -->

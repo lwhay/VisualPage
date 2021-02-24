@@ -67,7 +67,8 @@ public class ApiWuZhengBServiceImpl implements ApiWuZhengBService {
             }
         }
         resultMap.put("markGoods",markGoods);
-        List<Map<String, Object>> fullPhoto = secondJdbcTemplate.queryForList("SELECT * FROM FULL_PHOTO WHERE MARK_GOODS_ID=?",markGoodsId);
+//        List<Map<String, Object>> fullPhoto = secondJdbcTemplate.queryForList("SELECT * FROM FULL_PHOTO WHERE MARK_GOODS_ID=?",markGoodsId);
+        List<Map<String, Object>> fullPhoto = secondJdbcTemplate.queryForList("SELECT  ATTA_CONTENT as FULL_PHOTO_CONTENT FROM media_atta WHERE MEDIA_ENVIRONMENT_INFO_ID=?",markGoodsId);
         resultMap.put("fullPhoto",fullPhoto);
         List<Map<String, Object>> positionPhoto = secondJdbcTemplate.queryForList("SELECT * FROM POSITION_PHOTO WHERE MARK_GOODS_ID=?",markGoodsId);
         resultMap.put("positionPhoto",positionPhoto);
