@@ -67,7 +67,8 @@ public class ApiWuZhengBServiceImpl implements ApiWuZhengBService {
             }
         }
         resultMap.put("markGoods",markGoods);
-        List<Map<String, Object>> fullPhoto = secondJdbcTemplate.queryForList("SELECT * FROM FULL_PHOTO WHERE MARK_GOODS_ID=?",markGoodsId);
+//        List<Map<String, Object>> fullPhoto = secondJdbcTemplate.queryForList("SELECT * FROM FULL_PHOTO WHERE MARK_GOODS_ID=?",markGoodsId);
+        List<Map<String, Object>> fullPhoto = secondJdbcTemplate.queryForList("SELECT  ATTA_CONTENT as FULL_PHOTO_CONTENT FROM media_atta WHERE MEDIA_ENVIRONMENT_INFO_ID=?",markGoodsId);
         resultMap.put("fullPhoto",fullPhoto);
         List<Map<String, Object>> positionPhoto = secondJdbcTemplate.queryForList("SELECT * FROM POSITION_PHOTO WHERE MARK_GOODS_ID=?",markGoodsId);
         resultMap.put("positionPhoto",positionPhoto);
@@ -364,22 +365,15 @@ public class ApiWuZhengBServiceImpl implements ApiWuZhengBService {
     }
 
     @Override @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW, rollbackFor = { Exception.class,
-            RuntimeException.class }) public int insert(Map<String, Object> map) {
+            RuntimeException.class }) public int insertKineticSet(Map<String, Object> map) {
         Object[] objects = new Object[map.size()];
-        String sql = "insert into ";
-        sql += map.get("tableName") == null ? "" : map.get("tableName").toString() + "(";
+        String sql = "insert into " + map.get("tableName") == null ? "" : map.get("tableName").toString() + "(";
         String keypart = "";
         String valpart = "";
         for (Map.Entry<String, Object> e : map.entrySet()) {
-            if (e.getKey().equals("tableName") || e.getKey().equals("tableId"))
-                continue;
             keypart += e.getKey();
             keypart += ",";
-            if (e.getValue().getClass().equals(String.class)) {
-                valpart += "'";
-                valpart += e.getValue().toString();
-                valpart += "'";
-            }
+            valpart += e.getValue().toString();
             valpart += ",";
         }
         keypart = keypart.trim();
